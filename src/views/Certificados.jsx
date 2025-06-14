@@ -1,7 +1,7 @@
-import { Box } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react";
 
 const Certificados = () => {
-  return <Box>Certificados</Box>
-}
+  return <Box>Certificados</Box>;
+};
 
-export default Certificados
+export default Certificados;

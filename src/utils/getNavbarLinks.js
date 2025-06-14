@@ -11,9 +11,9 @@ const monitorLinks = [
     to: 'monitor/certificados',
     text: 'Certificados'
   }
-]
+];
 
-const alunoLinks = []
+const alunoLinks = [];
 
 /**
  * 
@@ -22,10 +22,10 @@ const alunoLinks = []
  */
 const getNavbarLinks = (isMonitor) => {
   if (isMonitor) {
-    return monitorLinks
+    return monitorLinks;
   }
 
-  return alunoLinks
-}
+  return alunoLinks;
+};
 
-export default getNavbarLinks
+export default getNavbarLinks;

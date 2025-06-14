@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Box,
@@ -14,14 +14,14 @@ import {
   Portal,
   Icon,
   Image,
-} from '@chakra-ui/react'
-import { MdClose, MdMenu } from 'react-icons/md'
-import Logo from '../assets/logo.png'
+} from '@chakra-ui/react';
+import { MdClose, MdMenu } from 'react-icons/md';
+import Logo from '../assets/logo.png';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import getNavbarLinks from '../utils/getNavbarLinks';
 
 export default function NavBar() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box px={8} py={3} shadow="sm">
@@ -77,5 +77,5 @@ export default function NavBar() {
         </Box>
       ) : null}
     </Box>
-  )
+  );
 }

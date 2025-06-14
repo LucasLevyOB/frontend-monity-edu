@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/react"
-import NavBar from "../components/NavBar"
-import { Outlet } from "react-router-dom"
+import { Box } from "@chakra-ui/react";
+import NavBar from "../components/NavBar";
+import { Outlet } from "react-router-dom";
 
 const DefaultLayout = () => {
   return (
@@ -10,7 +10,7 @@ const DefaultLayout = () => {
         <Outlet />
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default DefaultLayout
+export default DefaultLayout;

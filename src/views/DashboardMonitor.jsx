@@ -1,7 +1,7 @@
-import { Box } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react";
 
 const DashboardMonitor = () => {
-  return <Box>DashboardMonitor</Box>
-}
+  return <Box>DashboardMonitor</Box>;
+};
 
-export default DashboardMonitor
+export default DashboardMonitor;

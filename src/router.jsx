@@ -3,6 +3,7 @@ import DashboardMonitor from "./views/DashboardMonitor";
 import CadastrarMonitoria from "./views/CadastrarMonitoria";
 import Certificados from "./views/Certificados";
 import DefaultLayout from "./layouts/DefaultLayout";
+import VerificarMonitor from "./views/VerificarMonitor";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -11,6 +12,7 @@ const router = createBrowserRouter(
         <Route index element={<DashboardMonitor />} />
         <Route path='/monitor/cadastrar-monitoria' element={<CadastrarMonitoria />} />
         <Route path='/monitor/certificados' element={<Certificados />} />
+        <Route path='/monitor/verificar-monitor' element={<VerificarMonitor />} />
       </Route>
       {/* <Route path="aluno">
         <Route index element={<DashboardAluno />} />
