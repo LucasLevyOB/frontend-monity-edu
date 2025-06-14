@@ -20,6 +20,6 @@ const router = createBrowserRouter(
       </Route> */}
     </Route>
   )
-)
+);
 
-export default router
+export default router;
