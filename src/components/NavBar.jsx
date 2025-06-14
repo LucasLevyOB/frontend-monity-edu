@@ -19,9 +19,11 @@ import { MdClose, MdMenu } from 'react-icons/md';
 import Logo from '../assets/logo.png';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import getNavbarLinks from '../utils/getNavbarLinks';
+import useNavbarUserOptions from '../hooks/useNavbarUserOptions';
 
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { getUserOptions } = useNavbarUserOptions();
 
   return (
     <Box px={8} py={3} shadow="sm">
@@ -55,11 +57,9 @@ export default function NavBar() {
             <Portal>
               <Menu.Positioner>
                 <Menu.Content>
-                  <Menu.Item value="new-txt">New Text File</Menu.Item>
-                  <Menu.Item value="new-file">New File...</Menu.Item>
-                  <Menu.Item value="new-win">New Window</Menu.Item>
-                  <Menu.Item value="open-file">Open File...</Menu.Item>
-                  <Menu.Item value="export">Export</Menu.Item>
+                  {getUserOptions("monitor").map(option => (
+                    <Menu.Item value={option.text} key={option.text} onClick={option.action}>{option.text}</Menu.Item>
+                  ))}
                 </Menu.Content>
               </Menu.Positioner>
             </Portal>
