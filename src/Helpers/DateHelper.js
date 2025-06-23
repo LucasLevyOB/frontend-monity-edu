@@ -13,8 +13,7 @@ class DateHelper {
     isAfter(date1, date2) {
         const d1 = dayjs(date1);
         const d2 = dayjs(date2);
-        console.log(d1);
-        console.log(d2);
+
         return d1.isAfter(d2);
     }
 }

@@ -17,7 +17,6 @@ const Login = () => {
   const { handleSubmit, register, formState: { errors, isValid } } = useForm({ resolver });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  // const count = useSelector((state) => state.contador);
   const dispatch = useDispatch();
 
   const login = async (data) => {
@@ -26,15 +25,12 @@ const Login = () => {
       return;
     }
 
-    console.log(data);
-
     const apiService = new ApiService();
 
     setLoading(true);
     const response = await apiService.login(data.email, data.senha);
     setLoading(false);
 
-    console.log("deu reu");
     if (!response.success) {
       toaster.create({
         type: "error",
