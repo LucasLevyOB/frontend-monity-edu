@@ -6,6 +6,7 @@ import router from './routes/router.jsx';
 import { store, persistor } from './stores';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Toaster } from './components/ui/toaster.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <RouterProvider router={router} />
+          <Toaster />
         </PersistGate>
       </Provider>
     </ChakraProvider>

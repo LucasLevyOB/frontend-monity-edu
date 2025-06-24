@@ -7,6 +7,7 @@ import VerificarMonitor from "../views/VerificarMonitor";
 import Login from "../views/Login";
 import DashboardAluno from "../views/DashboardAluno";
 import PrivateRoutes from "./PrivateRoutes";
+import Cadastro from "../views/Cadastro";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
         </Route>
       </Route>
       <Route path="/login" element={<Login />} />
+      <Route path="/cadastro" element={<Cadastro />} />
     </>
   )
 );

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import Logo from '../assets/logo.png';
 import Mascote from '../assets/mascotev.png';
 import { validationSchemaLogin } from "../validations/validationSchemaLogin";
@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
-import { Toaster, toaster } from "../components/ui/toaster";
+import { toaster } from "../components/ui/toaster";
 import MeField from "../components/MeField";
 import { useDispatch } from "react-redux";
 
@@ -67,12 +67,11 @@ const Login = () => {
             </form>
             <Text mt={9}>
               Não tem uma conta?
-              <Link to="/"> Criar nova conta</Link>
+              <Link to="/cadastro"> Criar nova conta</Link>
             </Text>
           </Stack>
         </Flex>
       </Flex>
-      <Toaster />
     </>
   );
 };
