@@ -94,4 +94,24 @@ export default class ApiService {
       };
     }
   }
+
+  async cadastrarMonitoria(data) {
+    try {
+      const response = await this.#request.post("/monitorias/cadastro", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return {
+        success: response.data.status === "success" && response.status === 201,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao cadastrar a monitoria.",
+      };
+    }
+  }
 }
