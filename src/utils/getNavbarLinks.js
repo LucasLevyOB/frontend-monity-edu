@@ -1,14 +1,14 @@
 const monitorLinks = [
   {
-    to: 'monitor',
+    to: '/monitor',
     text: 'Home'
   },
   {
-    to: 'monitor/cadastrar-monitoria',
+    to: '/monitor/cadastrar-monitoria',
     text: 'Cadastrar Monitoria'
   },
   {
-    to: 'monitor/certificados',
+    to: '/monitor/certificados',
     text: 'Certificados'
   }
 ];
@@ -20,8 +20,8 @@ const alunoLinks = [];
  * @param {boolean} isMonitor 
  * @returns 
  */
-const getNavbarLinks = (isMonitor) => {
-  if (isMonitor) {
+const getNavbarLinks = (type) => {
+  if (type === "MONITOR") {
     return monitorLinks;
   }
 

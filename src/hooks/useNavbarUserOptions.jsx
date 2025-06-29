@@ -31,11 +31,11 @@ const useNavbarUserOptions = () => {
    * @returns 
    */
   const getUserOptions = (userType) => {
-    if (userType === "monitor") {
+    if (userType === "MONITOR") {
       return monitorOptions;
     }
 
-    if (userType === "aluno") {
+    if (userType === "ALUNO") {
       return alunoOptions;
     }
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { store } from "../stores";
 
 /**
  * @template T
@@ -20,6 +21,13 @@ export default class ApiService {
         "Content-Type": "application/json",
       },
     });
+    this.#request.interceptors.request.use((config) => {
+      const token = store.getState().auth?.user?.token;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
   }
 
   /**
@@ -29,19 +37,16 @@ export default class ApiService {
    */
   async verificarMonitor(payload) {
     try {
-      const response = await this.#request.post("/verificar-monitor", payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const id = store.getState().auth?.user?.id;
+      const response = await this.#request.post("/credenciar/monitor", { ...payload, monitorId: id });
 
       return {
-        success: response.status === 200,
+        success: response.status === 201 && response.data.status === "success",
       };
     } catch (error) {
       return {
         success: false,
-        message: error.response ? error.response.data : "Network Error",
+        message: error.response ? error.response.data : "Desculpe, ocorreu um erro desconhico ao verificar o monitor.",
       };
     }
   }

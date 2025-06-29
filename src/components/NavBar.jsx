@@ -20,10 +20,13 @@ import Logo from '../assets/logo.png';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import getNavbarLinks from '../utils/getNavbarLinks';
 import useNavbarUserOptions from '../hooks/useNavbarUserOptions';
+import { store } from "../stores";
 
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getUserOptions } = useNavbarUserOptions();
+  const userType = store.getState().auth.user?.userType || "ALUNO";
+  const userName = store.getState().auth.user?.nome || "Usuário";
 
   return (
     <Box px={8} py={3} shadow="sm">
@@ -39,8 +42,8 @@ export default function NavBar() {
           <Box mr={32}>
             <Image src={Logo} height="48px" />
           </Box>
-          <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-            {getNavbarLinks(true).map((link) => (
+          <HStack as={'nav'} spaceX={6} display={{ base: 'none', md: 'flex' }}>
+            {getNavbarLinks(userType).map((link) => (
               <Link key={link.to} to={link.to}>{link.text}</Link>
             ))}
           </HStack>
@@ -50,14 +53,14 @@ export default function NavBar() {
             <Menu.Trigger asChild>
               <Box>
                 <Avatar.Root>
-                  <Avatar.Fallback name="Segun Adebayo" />
+                  <Avatar.Fallback name={userName} />
                 </Avatar.Root>
               </Box>
             </Menu.Trigger>
             <Portal>
               <Menu.Positioner>
                 <Menu.Content>
-                  {getUserOptions("monitor").map(option => (
+                  {getUserOptions(userType).map(option => (
                     <Menu.Item value={option.text} key={option.text} onClick={option.action}>{option.text}</Menu.Item>
                   ))}
                 </Menu.Content>
@@ -69,8 +72,8 @@ export default function NavBar() {
 
       {isOpen ? (
         <Box pb={4} display={{ md: 'none' }}>
-          <Stack as={'nav'} spacing={4}>
-            {getNavbarLinks(true).map((link) => (
+          <Stack as={'nav'} spaceY={6}>
+            {getNavbarLinks(userType).map((link) => (
               <NavLink key={link}>{link}</NavLink>
             ))}
           </Stack>
