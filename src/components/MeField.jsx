@@ -1,14 +1,16 @@
-import { Field, Input } from "@chakra-ui/react";
+import { Field, Input, InputGroup } from "@chakra-ui/react";
 
-const MeField = ({ label, customError = "", register, ...restProps }) => {
+const MeField = ({ label, customError = "", register, startElement, type, placeholder, ...restProps }) => {
 
   return (
-    <Field.Root invalid={customError}>
+    <Field.Root invalid={customError} {...restProps}>
       <Field.Label>
         {label}
         <Field.RequiredIndicator />
       </Field.Label>
-      <Input {...register} {...restProps} />
+      <InputGroup startElement={startElement}>
+        <Input {...register} type={type} placeholder={placeholder} />
+      </InputGroup>
       <Field.HelperText />
       {
         customError &&

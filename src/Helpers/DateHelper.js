@@ -16,6 +16,10 @@ class DateHelper {
 
         return d1.isAfter(d2);
     }
+
+    format(date, format = "DD/MM/YYYY") {
+        return dayjs(date).format(format);
+    }
 }
 
 export default new DateHelper();
