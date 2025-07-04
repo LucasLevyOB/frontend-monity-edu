@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
+import { Alert, Box, Button, Field, Flex, Heading, HStack, Stack, Textarea } from "@chakra-ui/react";
 import { useYupValidationResolver } from "../hooks/useYupValidationResolver";
 import { validationSchemaCadastroMonitoria } from "../validations/validationSchemaCadastroMonitoria";
 import { useForm } from "react-hook-form";
@@ -65,7 +65,18 @@ const CadastrarMonitoria = () => {
                 <MeField register={register("linkReuniao")} label="Link da Reunião" customError={errors.linkReuniao?.message} />
                 <MeField register={register("materia")} label="Materia" customError={errors.materia?.message} />
                 <MeField register={register("topico")} label="Tópico" customError={errors.topico?.message} />
-                <MeField register={register("descricao")} label="Descrição" customError={errors.descricao?.message} />
+                <Field.Root required>
+                  <Field.Label>
+                    Descrição
+                  </Field.Label>
+                  <Textarea {...register("descricao")} label="" size="xl" />
+                  {
+                    errors.descricao?.message &&
+                    <Field.ErrorText>
+                      {errors.descricao?.message}
+                    </Field.ErrorText>
+                  }
+                </Field.Root>
                 <MeFileUpload register={register("arquivos")} maxFiles={5} label="Anexar Arquivos" customError={errors.arquivos?.message} />
               </Stack>
               <Flex justifyContent="right" mt={12}>

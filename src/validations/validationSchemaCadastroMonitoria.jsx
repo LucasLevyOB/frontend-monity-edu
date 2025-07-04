@@ -9,11 +9,6 @@ export const validationSchemaCadastroMonitoria = Yup.object().shape({
     .required("Data é obrigatória")
     .typeError("Data deve ser uma data válida"),
 
-  // Ajuste para aceitar apenas horas e minutos
-  // O Yup.date() não valida horas e minutos, então usamos um regex para validar o formato
-  // e depois convertemos para Date no momento da validação
-  // Isso é necessário porque o input type="time" retorna uma string no formato "HH:mm"
-  // que não é diretamente convertível para Date
   horarioInicio: Yup.string()
     .required("Hora de início é obrigatória")
     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Hora de início deve estar no formato HH:mm")
