@@ -1,22 +1,35 @@
 import { useNavigate } from "react-router-dom";
+import { store } from "../stores";
+import { useDispatch } from "react-redux";
 
 const useNavbarUserOptions = () => {
   const navigate = useNavigate();
+  const aprovado = store.getState().auth.user?.status === "APROVADO";
+  const dispatch = useDispatch();
 
   const baseOptions = [
     {
-      action: () => console.log('sair'),
+      action: () => {
+        dispatch({ type: "LOGOUT" });
+        navigate("/login");
+      },
       text: 'Sair'
     },
   ];
 
   const monitorOptions = [
-    {
-      action: () => {
-        navigate("/monitor/verificar-monitor");
-      },
-      text: 'Verificar Conta'
-    },
+    ...(
+      !aprovado ?
+        [
+          {
+            action: () => {
+              navigate("/monitor/verificar-monitor");
+            },
+            text: 'Verificar Conta'
+          },
+        ] :
+        []
+    ),
     ...baseOptions,
   ];
 

@@ -97,7 +97,7 @@ export default class ApiService {
 
   async cadastrarMonitoria(data) {
     try {
-      const response = await this.#request.post("/monitorias/cadastro", data, {
+      const response = await this.#request.post("/monitorias", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -14,7 +14,7 @@ export const validationSchemaCadastroMonitoria = Yup.object().shape({
   // e depois convertemos para Date no momento da validação
   // Isso é necessário porque o input type="time" retorna uma string no formato "HH:mm"
   // que não é diretamente convertível para Date
-  inicio: Yup.string()
+  horarioInicio: Yup.string()
     .required("Hora de início é obrigatória")
     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Hora de início deve estar no formato HH:mm")
     .test("is-valid-time", "Hora de início deve ser uma hora válida", (value) => {
@@ -23,7 +23,7 @@ export const validationSchemaCadastroMonitoria = Yup.object().shape({
       return hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60;
     }),
 
-  fim: Yup.string()
+  horarioFim: Yup.string()
     .required("Hora de fim é obrigatória")
     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Hora de fim deve estar no formato HH:mm")
     .test("is-valid-time", "Hora de fim deve ser uma hora válida", (value) => {
@@ -56,7 +56,7 @@ export const validationSchemaCadastroMonitoria = Yup.object().shape({
     .max(1000, "Descrição deve ter no máximo 1000 caracteres"),
 
   // o campo é do tipo file
-  anexos: Yup
+  arquivos: Yup
     .mixed()
     .test("fileSize", "Tamanho de arquivo não suportado.", (value) => {
       if (value && value?.length > 0) {
