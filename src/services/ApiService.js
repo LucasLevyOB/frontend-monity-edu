@@ -94,4 +94,39 @@ export default class ApiService {
       };
     }
   }
+
+  async obterMonitoria(id) {
+  try {
+    const response = await this.#request.get(`/monitorias/${id}`);
+    
+    return {
+      success: response.data.status === "success" && response.status === 200,
+      data: response.data.data,
+      message: "Monitoria obtida com sucesso"
+    };
+  } catch (error) {
+    console.error("Erro ao obter monitoria:", error);
+    
+    if (error.response) {
+      return {
+        success: false,
+        data: null,
+        message: error.response.data?.message || "Erro ao buscar monitoria",
+        statusCode: error.response.status
+      };
+    } else if (error.request) {
+      return {
+        success: false,
+        data: null,
+        message: "Erro de conexão com o servidor"
+      };
+    } else {
+      return {
+        success: false,
+        data: null,
+        message: "Erro inesperado ao buscar monitoria"
+      };
+    }
+  }
+}
 }
