@@ -1,9 +1,9 @@
 import { Button, FileUpload, Text } from "@chakra-ui/react";
 import { MdUpload } from "react-icons/md";
 
-const MeFileUpload = ({ register, customError, label }) => {
+const MeFileUpload = ({ register, customError, label, ...restProps }) => {
   return (
-    <FileUpload.Root accept={["application/pdf"]} invalid={!!customError}>
+    <FileUpload.Root accept={["application/pdf"]} invalid={!!customError} {...restProps}>
       <FileUpload.HiddenInput {...register} />
       <FileUpload.Label>
         {label}

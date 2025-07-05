@@ -14,6 +14,7 @@ import {
   Portal,
   Icon,
   Image,
+  VStack,
 } from '@chakra-ui/react';
 import { MdClose, MdMenu } from 'react-icons/md';
 import Logo from '../assets/logo.png';
@@ -27,6 +28,7 @@ export default function NavBar() {
   const { getUserOptions } = useNavbarUserOptions();
   const userType = store.getState().auth.user?.userType || "ALUNO";
   const userName = store.getState().auth.user?.nome || "Usuário";
+  const email = store.getState().auth.user?.email || "usuario@gmail.com";
 
   return (
     <Box px={8} py={3} shadow="sm">
@@ -60,6 +62,13 @@ export default function NavBar() {
             <Portal>
               <Menu.Positioner>
                 <Menu.Content>
+                  <VStack padding={2}>
+                    <Avatar.Root mb={1}>
+                      <Avatar.Fallback name={userName} />
+                    </Avatar.Root>
+                    <Text>{email}</Text>
+                  </VStack>
+                  <Menu.Separator />
                   {getUserOptions(userType).map(option => (
                     <Menu.Item value={option.text} key={option.text} onClick={option.action}>{option.text}</Menu.Item>
                   ))}
