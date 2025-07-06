@@ -84,7 +84,7 @@ const DashboardAluno = () => {
     const api = new ApiService();
 
     setFetchingNextMonitorias(true);
-    const response = await api.nextMonitorias(searchText, page);
+    const response = await api.monitoriasProximas(searchText, page);
     setFetchingNextMonitorias(false);
 
     if (!response.success) {
@@ -107,7 +107,7 @@ const DashboardAluno = () => {
     const api = new ApiService();
 
     setFetchingPastMonitorias(true);
-    const response = await api.pastMonitorias(searchText, page);
+    const response = await api.monitoriasPassadas(searchText, page);
     setFetchingPastMonitorias(false);
     console.log(response);
 

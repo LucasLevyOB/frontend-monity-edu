@@ -16,9 +16,12 @@ const MeCard = ({ monitoria, ...restProps }) => {
         <Card.Description lineClamp="4" textAlign="justify">
           {monitoria.descricao}
         </Card.Description>
-        <HStack mt={6}>
-          <Text fontSize="xs" color="GrayText" mr="auto">{Helpers.DateHelper.format(monitoria.data, "DD/MM/YYYY")} | {monitoria.inicio} - {monitoria.fim}</Text>
+        <HStack mt={2} gap={2}>
           <Tag>{monitoria.materia}</Tag>
+          <Tag variant="text">{monitoria.topico}</Tag>
+        </HStack>
+        <HStack mt={6}>
+          <Text fontSize="xs" color="GrayText" mr="auto">{Helpers.DateHelper.format(monitoria.data, "DD/MM/YYYY")} | {monitoria.horarioInicio} - {monitoria.horarioFim}</Text>
         </HStack>
       </Card.Body>
       <Card.Footer justifyContent="flex-end">
