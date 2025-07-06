@@ -9,6 +9,7 @@ import DashboardAluno from "../views/DashboardAluno";
 import PrivateRoutes from "./PrivateRoutes";
 import Cadastro from "../views/Cadastro";
 import VisualizarMonitoria from "../views/VisualizarMonitoria";
+import EditarMonitoria from "../views/EditarMonitoria";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,10 +21,10 @@ const router = createBrowserRouter(
           <Route path='/monitor/cadastrar-monitoria' element={<CadastrarMonitoria />} />
           <Route path='/monitor/certificados' element={<Certificados />} />
           <Route path='/monitor/verificar-monitor' element={<VerificarMonitor />} />
+          <Route path='/monitor/editar-monitoria/:id' element={<EditarMonitoria />} />
         </Route>
         <Route path="/aluno" element={<DefaultLayout />}>
           <Route index element={<DashboardAluno />} />
-          {/* <Route path='/monitor/monitorias-ofertadas' element={<MonitoriasOfertadas />} /> */}
         </Route>
       </Route>
       <Route path="/login" element={<Login />} />
