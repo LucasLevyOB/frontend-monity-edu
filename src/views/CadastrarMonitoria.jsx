@@ -14,7 +14,7 @@ const CadastrarMonitoria = () => {
   const resolver = useYupValidationResolver(validationSchemaCadastroMonitoria);
   const { handleSubmit, register, formState: { errors, isValid }, reset } = useForm({ resolver });
   const [loading, setLoading] = useState(false);
-  const credenciado = store.getState().auth.user?.status === "APROVADO";
+  const credenciado = store.getState().auth.user?.statusMonitor === "APROVADO";
 
   const sendData = async (data) => {
     if (!isValid) {
