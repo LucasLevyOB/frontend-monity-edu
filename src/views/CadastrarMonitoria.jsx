@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Field, Flex, Heading, HStack, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Button, Field, Flex, Heading, HStack, Stack, Textarea } from "@chakra-ui/react";
 import { useYupValidationResolver } from "../hooks/useYupValidationResolver";
 import { validationSchemaCadastroMonitoria } from "../validations/validationSchemaCadastroMonitoria";
 import { useForm } from "react-hook-form";
@@ -9,6 +9,7 @@ import MeField from "../components/MeField";
 import MeFileUpload from "../components/MeFileUpload";
 import { store } from "../stores";
 import Helpers from "../Helpers";
+import { MeAvisoContaNaoVerificada } from "../components/MeAvisoContaNaoVerificada";
 
 const CadastrarMonitoria = () => {
   const resolver = useYupValidationResolver(validationSchemaCadastroMonitoria);
@@ -25,7 +26,7 @@ const CadastrarMonitoria = () => {
 
     const payload = {
       ...data,
-      data: Helpers.DateHelper.formatDate(data.data),
+      data: Helpers.DateHelper.format(data.data),
     };
 
     setLoading(true);
@@ -65,7 +66,7 @@ const CadastrarMonitoria = () => {
                 <MeField register={register("linkReuniao")} label="Link da Reunião" customError={errors.linkReuniao?.message} />
                 <MeField register={register("materia")} label="Materia" customError={errors.materia?.message} />
                 <MeField register={register("topico")} label="Tópico" customError={errors.topico?.message} />
-                <Field.Root required>
+                <Field.Root invalid={errors.linkReuniao?.message}>
                   <Field.Label>
                     Descrição
                   </Field.Label>
@@ -86,15 +87,7 @@ const CadastrarMonitoria = () => {
           </Stack>
 
         ) : (
-          <Alert.Root status="warning">
-            <Alert.Indicator />
-            <Alert.Content>
-              <Alert.Title>Conta não verificada</Alert.Title>
-              <Alert.Description>
-                Por favor, verifique sua conta para poder cadastrar monitorias.
-              </Alert.Description>
-            </Alert.Content>
-          </Alert.Root>
+          MeAvisoContaNaoVerificada
         )
       }
     </>
