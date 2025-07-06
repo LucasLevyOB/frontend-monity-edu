@@ -9,6 +9,7 @@ import { toaster } from "../components/ui/toaster";
 import { useNavigate } from "react-router-dom";
 import ApiUniversities from "../services/ApiUniversities";
 import { debounce } from "lodash";
+import { useDispatch } from "react-redux";
 
 const VerificarMonitor = () => {
   const resolver = useYupValidationResolver(validationSchemaVerificarMonitor);
@@ -23,6 +24,7 @@ const VerificarMonitor = () => {
   const instituicaoEnsinoValue = watch("instituicaoEnsino");
   const [loadingUniversities, setLoadingUniversities] = useState(false);
   const [errorUniversities, setErrorUniversities] = useState("");
+  const dispatch = useDispatch();
 
   const sendData = async (data) => {
     if (!isValid) {
@@ -48,6 +50,8 @@ const VerificarMonitor = () => {
       title: "Sucesso ao fazer o credenciamento.",
       description: "Agora você pode criar monitorias.",
     });
+
+    dispatch({ type: "UPDATE_USER_STATUS", payload: "APROVADO" });
     navigate("/monitor");
   };
 
@@ -86,6 +90,7 @@ const VerificarMonitor = () => {
             onInputValueChange={e => setValue("instituicaoEnsino", e.inputValue, { shouldValidate: true })}
             positioning={{ sameWidth: false, placement: "bottom-start" }}
             invalid={errors.instituicaoEnsino?.message}
+            w="100%"
           >
             <Combobox.Label>Instituição de Ensino</Combobox.Label>
 
