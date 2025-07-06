@@ -1,5 +1,6 @@
 import axios from "axios";
 import { store } from "../stores";
+import Helpers from "../Helpers";
 
 /**
  * @template T
@@ -111,6 +112,59 @@ export default class ApiService {
       return {
         success: false,
         message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao cadastrar a monitoria.",
+      };
+    }
+  }
+
+  /**
+   * 
+   * @param {{ topico: string, data: string }} filter 
+   * @returns 
+   */
+  #formatStrFilter(filter) {
+    let strFilter = "";
+
+    if (filter.topico?.trim()) {
+      strFilter += `&topico=${filter.topico}`;
+    }
+
+    if (filter.data?.trim()) {
+      strFilter += `&data=${filter.data}`;
+    }
+
+    return strFilter;
+  }
+
+  async monitoriasProximas(filter, page) {
+    try {
+      const status = "PENDENTE";
+      const response = await this.#request.get(`/monitorias?status=${status}${this.#formatStrFilter(filter)}`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: { data: response.data.data }
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar as monitoria próximas.",
+      };
+    }
+  }
+
+  async monitoriasPassadas(filter, page) {
+    try {
+      const status = "REALIZADA";
+      const response = await this.#request.get(`/monitorias?status=${status}${this.#formatStrFilter(filter)}`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: { data: response.data.data }
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar as monitoria passadas.",
       };
     }
   }

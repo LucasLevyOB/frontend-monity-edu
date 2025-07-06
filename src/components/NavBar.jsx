@@ -23,7 +23,7 @@ import getNavbarLinks from '../utils/getNavbarLinks';
 import useNavbarUserOptions from '../hooks/useNavbarUserOptions';
 import { store } from "../stores";
 
-export default function NavBar() {
+export default function NavBar(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getUserOptions } = useNavbarUserOptions();
   const userType = store.getState().auth.user?.userType || "ALUNO";
@@ -31,8 +31,8 @@ export default function NavBar() {
   const email = store.getState().auth.user?.email || "usuario@gmail.com";
 
   return (
-    <Box px={8} py={3} shadow="sm">
-      <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+    <Box px={8} py={3} shadow="sm" backgroundColor="white" {...props}>
+      <Flex h={16} alignItems={'center'} justifyContent={'space-between'} position="relative" zIndex={1001} top={0}>
         <IconButton
           size={'md'}
           icon={isOpen ? <MdClose /> : <MdMenu />}
