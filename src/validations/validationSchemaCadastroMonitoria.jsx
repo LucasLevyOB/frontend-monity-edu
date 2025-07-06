@@ -35,6 +35,7 @@ export const validationSchemaCadastroMonitoria = Yup.object().shape({
     }),
 
   linkReuniao: Yup.string()
+    .required("Link é obrigatório")
     .url("Link deve ser uma URL válida")
     .max(200, "Link deve ter no máximo 200 caracteres"),
 

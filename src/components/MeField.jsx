@@ -1,6 +1,23 @@
-import { Field, Input, InputGroup } from "@chakra-ui/react";
+import { CloseButton, Field, Input, InputGroup } from "@chakra-ui/react";
+import { useEffect, useRef } from "react";
 
-const MeField = ({ label, customError = "", register, startElement, type, placeholder, ...restProps }) => {
+const MeField = ({ label, value, customError = "", register, startElement, type, clear, placeholder, onChange, ...restProps }) => {
+  const inputRef = useRef(null);
+
+  const endElement = clear && value ? (
+    <CloseButton
+      size="xs"
+      onClick={() => {
+        clear();
+        inputRef.current?.focus();
+      }}
+      me="-2"
+    />
+  ) : undefined;
+
+  useEffect(() => {
+    console.log('customError: ', customError);
+  }, [customError]);
 
   return (
     <Field.Root invalid={customError} {...restProps}>
@@ -8,8 +25,8 @@ const MeField = ({ label, customError = "", register, startElement, type, placeh
         {label}
         <Field.RequiredIndicator />
       </Field.Label>
-      <InputGroup startElement={startElement}>
-        <Input {...register} type={type} placeholder={placeholder} />
+      <InputGroup startElement={startElement} endElement={endElement}>
+        <Input ref={inputRef} value={value} {...register} type={type} placeholder={placeholder} onChange={onChange} />
       </InputGroup>
       <Field.HelperText />
       {

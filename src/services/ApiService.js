@@ -128,12 +128,16 @@ export default class ApiService {
       strFilter += `&topico=${filter.topico}`;
     }
 
+    if (filter.data?.trim()) {
+      strFilter += `&data=${filter.data}`;
+    }
+
     return strFilter;
   }
 
   async monitoriasProximas(filter, page) {
     try {
-      const status = "REALIZADA";
+      const status = "PENDENTE";
       const response = await this.#request.get(`/monitorias?status=${status}${this.#formatStrFilter(filter)}`);
 
       return {
@@ -150,7 +154,7 @@ export default class ApiService {
 
   async monitoriasPassadas(filter, page) {
     try {
-      const status = "PENDENTE";
+      const status = "REALIZADA";
       const response = await this.#request.get(`/monitorias?status=${status}${this.#formatStrFilter(filter)}`);
 
       return {

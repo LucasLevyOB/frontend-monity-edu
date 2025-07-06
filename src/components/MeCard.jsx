@@ -2,9 +2,13 @@ import { Button, Card, HStack, Text } from "@chakra-ui/react";
 import { Tag } from "./ui/tag";
 import Helpers from "../Helpers";
 
-const MeCard = ({ monitoria, ...restProps }) => {
+const MeCard = ({ monitoria, visualizarMonitoria, ...restProps }) => {
   const handleJoinMeet = () => {
     window.open(monitoria.link, "_blank");
+  };
+
+  const handleVisualizarMonitoria = () => {
+    visualizarMonitoria(monitoria.id);
   };
 
   return (
@@ -26,7 +30,7 @@ const MeCard = ({ monitoria, ...restProps }) => {
       </Card.Body>
       <Card.Footer justifyContent="flex-end">
         <Button variant="outline" mr={6} onClick={handleJoinMeet}>Entrar no Meet</Button>
-        <Button colorPalette="blue">Visualizar</Button>
+        <Button colorPalette="blue" onClick={handleVisualizarMonitoria}>Visualizar</Button>
       </Card.Footer>
     </Card.Root>
   );
