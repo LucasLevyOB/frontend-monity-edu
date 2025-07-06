@@ -17,7 +17,7 @@ class DateHelper {
         return d1.isAfter(d2);
     }
 
-    formatDate(date, format = "YYYY-MM-DD") {
+    format(date, format = "DD/MM/YYYY") {
         return dayjs(date).format(format);
     }
 }
