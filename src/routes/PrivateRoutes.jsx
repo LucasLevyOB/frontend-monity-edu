@@ -9,8 +9,7 @@ const PrivateRoutes = () => {
   const isTokenExpired = expirationTime && Helpers.DateHelper.isAfter(currentTime, expirationTime);
 
   return (
-    // isAutenticated && !isTokenExpired ? <Outlet /> : <Navigate to='/login' />
-    <Outlet />
+    isAutenticated && !isTokenExpired ? <Outlet /> : <Navigate to='/login' />
   );
 };
 
