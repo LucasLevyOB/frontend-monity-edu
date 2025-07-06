@@ -20,7 +20,7 @@ const ExibirMonitorias = ({ monitorias, fetching, ...restProps }) => {
   const navigate = useNavigate();
 
   const visualizarMonitoria = (id) => {
-    navigate(`/monitoria/${id}`);
+    navigate(`/monitor/visualizar-monitoria/${id}`);
   };
 
   return (
