@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 const useNavbarUserOptions = () => {
   const navigate = useNavigate();
-  const aprovado = store.getState().auth.user?.status === "APROVADO";
+  const aprovado = store.getState().auth.user?.statusMonitor === "APROVADO";
   const dispatch = useDispatch();
 
   const baseOptions = [
