@@ -4,7 +4,7 @@ import Helpers from "../Helpers";
 
 const MeCard = ({ monitoria, visualizarMonitoria, ...restProps }) => {
   const handleJoinMeet = () => {
-    window.open(monitoria.link, "_blank");
+    window.open(monitoria.linkReuniao, "_blank");
   };
 
   const handleVisualizarMonitoria = () => {
@@ -12,15 +12,15 @@ const MeCard = ({ monitoria, visualizarMonitoria, ...restProps }) => {
   };
 
   return (
-    <Card.Root {...restProps}>
+    <Card.Root {...restProps} minW="340px" minH="324px">
       <Card.Header>
         <Card.Title mt="2" textStyle="md" textAlign="center">{monitoria.titulo}</Card.Title>
       </Card.Header>
       <Card.Body>
-        <Card.Description lineClamp="4" textAlign="justify">
+        <Card.Description lineClamp="4" textAlign="justify" mb={2}>
           {monitoria.descricao}
         </Card.Description>
-        <HStack mt={2} gap={2}>
+        <HStack mt="auto" gap={2}>
           <Tag>{monitoria.materia}</Tag>
           <Tag variant="text">{monitoria.topico}</Tag>
         </HStack>

@@ -4,7 +4,7 @@ import { validationSchemaCadastroMonitoria } from "../validations/validationSche
 import { useForm } from "react-hook-form";
 import ApiService from "../services/ApiService";
 import { toaster } from "../components/ui/toaster";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import MeField from "../components/MeField";
 import MeFileUpload from "../components/MeFileUpload";
 import { store } from "../stores";
@@ -13,9 +13,16 @@ import { MeAvisoContaNaoVerificada } from "../components/MeAvisoContaNaoVerifica
 
 const CadastrarMonitoria = () => {
   const resolver = useYupValidationResolver(validationSchemaCadastroMonitoria);
-  const { handleSubmit, register, formState: { errors, isValid }, reset } = useForm({ resolver });
+  const { handleSubmit, register, formState: { errors, isValid }, reset, resetField } = useForm({ resolver });
   const [loading, setLoading] = useState(false);
   const credenciado = store.getState().auth.user?.statusMonitor === "APROVADO";
+  const fileInputRef = useRef(null);
+
+  const resetArquivos = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.querySelector("ul").innerHTML = "";
+    }
+  };
 
   const sendData = async (data) => {
     if (!isValid) {
@@ -47,6 +54,8 @@ const CadastrarMonitoria = () => {
     });
 
     reset();
+    resetField("arquivos");
+    resetArquivos();
   };
 
   return (
@@ -78,7 +87,7 @@ const CadastrarMonitoria = () => {
                     </Field.ErrorText>
                   }
                 </Field.Root>
-                <MeFileUpload register={register("arquivos")} maxFiles={5} label="Anexar Arquivos" customError={errors.arquivos?.message} />
+                <MeFileUpload ref={fileInputRef} register={register("arquivos")} maxFiles={5} label="Anexar Arquivos" customError={errors.arquivos?.message} />
               </Stack>
               <Flex justifyContent="right" mt={12}>
                 <Button type="submit" colorPalette="blue" loading={loading}>Cadastrar</Button>
@@ -87,7 +96,7 @@ const CadastrarMonitoria = () => {
           </Stack>
 
         ) : (
-          MeAvisoContaNaoVerificada
+          <MeAvisoContaNaoVerificada />
         )
       }
     </>

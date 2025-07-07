@@ -1,4 +1,4 @@
-import { HStack, Stack, VStack, Text, Box } from "@chakra-ui/react";
+import { HStack, Stack, VStack, Text, Box, Alert } from "@chakra-ui/react";
 import MeField from "../components/MeField";
 import { Tag } from "../components/ui/tag";
 import { MdSearch } from "react-icons/md";
@@ -96,6 +96,8 @@ const DashboardMonitor = () => {
   const [searcText, setSearchText] = useState("");
   const [filterDate, setFilterDate] = useState("");
   const credenciado = store.getState().auth.user?.statusMonitor === "APROVADO";
+  const [nextMonitoriasError, setNextMonitoriasError] = useState("");
+  const [pastMonitoriasError, setPastMonitoriasError] = useState("");
 
   const handleSearchTextChange = (event) => {
     setSearchText(event.target.value);
@@ -111,6 +113,10 @@ const DashboardMonitor = () => {
   };
 
   const fetchNextMonitorias = async (filter, type, page = nextMonitorias.page + 1) => {
+    if (nextMonitoriasError) {
+      setNextMonitoriasError("");
+    }
+
     const api = new ApiService();
 
     setFetchingNextMonitorias({
@@ -130,6 +136,8 @@ const DashboardMonitor = () => {
         type: "error",
         description: response.message ?? "Desculpe, ocorreu um erro ao buascar as próximas monitorias.",
       });
+      setNextMonitoriasError(response.message ?? "Desculpe, ocorreu um erro ao buascar as próximas monitorias.");
+
       return;
     }
 
@@ -142,6 +150,10 @@ const DashboardMonitor = () => {
   };
 
   const fetchPastMonitorias = async (filter, type, page = pastMonitorias.page + 1) => {
+    if (pastMonitoriasError) {
+      setPastMonitoriasError("");
+    }
+
     const api = new ApiService();
 
     setFetchingPastMonitorias({
@@ -161,6 +173,8 @@ const DashboardMonitor = () => {
         type: "error",
         description: response.message ?? "Desculpe, ocorreu um erro ao buascar as monitorias passadas.",
       });
+      setPastMonitoriasError(response.message ?? "Desculpe, ocorreu um erro ao buascar as monitorias passadas.");
+
       return;
     }
 
@@ -236,7 +250,12 @@ const DashboardMonitor = () => {
       <VStack alignItems="flex-start">
         <Text textStyle="xl" mb={8}>Monitorias Próximas</Text>
         {
-          credenciado ? (
+          nextMonitoriasError ? (
+            <Alert.Root status="error" w="auto" m="auto">
+              <Alert.Indicator />
+              <Alert.Title>{nextMonitoriasError}</Alert.Title>
+            </Alert.Root>
+          ) : credenciado ? (
             fechingNextMonitorias.fetching && fechingNextMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={nextMonitorias.data} fetching={fechingNextMonitorias} onScroll={onScrollNextMonitorias} />
           ) : (
             <MeAvisoContaNaoVerificada m="auto" />
@@ -246,7 +265,12 @@ const DashboardMonitor = () => {
       <VStack alignItems="flex-start">
         <Text textStyle="xl" mb={8}>Monitorias Realizadas</Text>
         {
-          credenciado ? (
+          pastMonitoriasError ? (
+            <Alert.Root status="error" w="auto" m="auto">
+              <Alert.Indicator />
+              <Alert.Title>{pastMonitoriasError}</Alert.Title>
+            </Alert.Root>
+          ) : credenciado ? (
             fechingPastMonitorias.fetching && fechingPastMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={pastMonitorias.data} fetching={fechingPastMonitorias} onScroll={onScrollPastMonitorias} />
           ) : (
             <MeAvisoContaNaoVerificada m="auto" />

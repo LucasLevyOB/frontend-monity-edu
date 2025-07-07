@@ -11,12 +11,16 @@ const VisualizarMonitoria = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const returnToHome = () => {
+    navigate("/monitor");
+  };
+
   const fetchMonitoria = async () => {
     try {
       const apiService = new ApiService();
       setLoading(true);
       const response = await apiService.obterMonitoria(id);
-      
+
       if (response.success) {
         setMonitoria(response.data);
       } else {
@@ -55,7 +59,7 @@ const VisualizarMonitoria = () => {
   };
 
   const handleEditar = () => {
-    navigate(`/monitor/editar/${id}`);
+    navigate(`/monitor/editar-monitoria/${id}`);
   };
 
   const handleGerarCertificado = () => {
@@ -111,7 +115,7 @@ const VisualizarMonitoria = () => {
     <Stack gap={10} w="100%" maxW="764px" m="auto">
       <VStack align="start" gap={6}>
         <Heading size="xl" as="h1">{monitoria.titulo}</Heading>
-        
+
         <HStack>
           <Badge colorPalette={monitoria.status === 'ATIVA' ? 'green' : 'gray'}>
             {monitoria.status || 'ATIVA'}
@@ -138,7 +142,7 @@ const VisualizarMonitoria = () => {
                   {formatTime(monitoria.horarioInicio)}
                 </Text>
               </Box>
-              
+
               <Box flex={1}>
                 <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
                   Fim
@@ -183,9 +187,9 @@ const VisualizarMonitoria = () => {
             <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
               Link da Reunião
             </Text>
-            <Text 
-              fontSize="md" 
-              color="blue.500" 
+            <Text
+              fontSize="md"
+              color="blue.500"
               textDecoration="underline"
               cursor="pointer"
               onClick={() => window.open(monitoria.linkReuniao, '_blank')}
@@ -202,10 +206,10 @@ const VisualizarMonitoria = () => {
             </Text>
             <VStack align="start" gap={2}>
               {monitoria.anexos.map((anexo, index) => (
-                <Text 
+                <Text
                   key={index}
-                  fontSize="md" 
-                  color="blue.500" 
+                  fontSize="md"
+                  color="blue.500"
                   textDecoration="underline"
                   cursor="pointer"
                   onClick={() => window.open(anexo.url, '_blank')}
@@ -218,15 +222,17 @@ const VisualizarMonitoria = () => {
         )}
       </VStack>
 
-      <Flex justifyContent="space-between" mt={12} gap={4}>
-        <Button 
-          variant="outline" 
+      <Flex justifyContent="flex-end" mt={12} gap={4}>
+        <Button
+          variant="outline"
           colorPalette="gray"
+          mr="auto"
           onClick={handleGerarCertificado}
         >
           Gerar Certificado
         </Button>
-        <Button 
+        <Button colorPalette="gray" variant="outline" mr={4} onClick={returnToHome}>Cancelar</Button>
+        <Button
           colorPalette="blue"
           onClick={handleEditar}
         >

@@ -14,17 +14,12 @@ import { useDispatch } from "react-redux";
 
 const Login = () => {
   const resolver = useYupValidationResolver(validationSchemaLogin);
-  const { handleSubmit, register, formState: { errors, isValid } } = useForm({ resolver });
+  const { handleSubmit, register, formState: { errors } } = useForm({ resolver, mode: "onChange" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const login = async (data) => {
-
-    if (!isValid) {
-      return;
-    }
-
     const apiService = new ApiService();
 
     setLoading(true);

@@ -20,6 +20,10 @@ const EditarMonitoria = () => {
   const navigate = useNavigate();
   const credenciado = store.getState().auth.user?.statusMonitor === "APROVADO";
 
+  const returnToViewMonitoring = () => {
+    navigate(`/monitor/visualizar-monitoria/${id}`);
+  };
+
   useEffect(() => {
     const carregarMonitoria = async () => {
       const apiService = new ApiService();
@@ -59,7 +63,7 @@ const EditarMonitoria = () => {
 
     const payload = {
       ...data,
-      data: Helpers.DateHelper.formatDate(data.data),
+      data: Helpers.DateHelper.format(data.data),
     };
 
     setLoading(true);
@@ -79,7 +83,7 @@ const EditarMonitoria = () => {
       description: "Monitoria atualizada com sucesso.",
     });
 
-    navigate(`/monitor/editar-monitoria/${id}`);
+    navigate(`/monitor/visualizar-monitoria/${id}`);
   };
 
   if (loadingData) {
@@ -107,7 +111,7 @@ const EditarMonitoria = () => {
                 <MeField register={register("linkReuniao")} label="Link da Reunião" customError={errors.linkReuniao?.message} />
                 <MeField register={register("materia")} label="Materia" customError={errors.materia?.message} />
                 <MeField register={register("topico")} label="Tópico" customError={errors.topico?.message} />
-                <Field.Root required>
+                <Field.Root invalid={errors.linkReuniao?.message}>
                   <Field.Label>
                     Descrição
                   </Field.Label>
@@ -122,6 +126,7 @@ const EditarMonitoria = () => {
                 <MeFileUpload register={register("arquivos")} maxFiles={5} label="Anexar Arquivos" customError={errors.arquivos?.message} />
               </Stack>
               <Flex justifyContent="right" mt={12}>
+                <Button colorPalette="gray" variant="outline" mr={4} onClick={returnToViewMonitoring}>Cancelar</Button>
                 <Button type="submit" colorPalette="blue" loading={loading}>Atualizar</Button>
               </Flex>
             </form>

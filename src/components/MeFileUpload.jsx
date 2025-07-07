@@ -1,9 +1,9 @@
 import { Button, FileUpload, Text } from "@chakra-ui/react";
 import { MdUpload } from "react-icons/md";
 
-const MeFileUpload = ({ register, customError, label, ...restProps }) => {
+const MeFileUpload = ({ register, customError, label, ref, ...restProps }) => {
   return (
-    <FileUpload.Root accept={["application/pdf"]} invalid={!!customError} {...restProps}>
+    <FileUpload.Root accept={["application/pdf"]} invalid={!!customError} {...restProps} ref={ref}>
       <FileUpload.HiddenInput {...register} />
       <FileUpload.Label>
         {label}
@@ -14,7 +14,7 @@ const MeFileUpload = ({ register, customError, label, ...restProps }) => {
         </Button>
       </FileUpload.Trigger>
       {customError && <Text textStyle="xs" fontWeight="medium" color="var(--chakra-colors-fg-error)">{customError}</Text>}
-      <FileUpload.List />
+      <FileUpload.List clearable />
     </FileUpload.Root>
   );
 };

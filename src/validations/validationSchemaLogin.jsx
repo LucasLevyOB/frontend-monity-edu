@@ -1,6 +1,6 @@
-import * as yup from "yup";
+import * as Yup from "yup";
 
-export const validationSchemaLogin = yup.object({
-  email: yup.string().email("Campo deve ser um email válido").required("Campo Obrigatório"),
-  senha: yup.string().required("Campo Obrigatório"),
+export const validationSchemaLogin = Yup.object().shape({
+  email: Yup.string().email("Campo deve ser um email válido").required("Campo Obrigatório"),
+  senha: Yup.string().required("Campo Obrigatório"),
 });

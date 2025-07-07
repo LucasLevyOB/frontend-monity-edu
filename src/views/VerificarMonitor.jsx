@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 
 const VerificarMonitor = () => {
   const resolver = useYupValidationResolver(validationSchemaVerificarMonitor);
-  const { handleSubmit, register, formState: { errors, isValid }, watch, setValue } = useForm({ resolver });
+  const { handleSubmit, register, formState: { errors }, watch, setValue } = useForm({ resolver });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { collection, set } = useListCollection({
@@ -27,10 +27,6 @@ const VerificarMonitor = () => {
   const dispatch = useDispatch();
 
   const sendData = async (data) => {
-    if (!isValid) {
-      return;
-    }
-
     const apiService = new ApiService();
 
     setLoading(true);
