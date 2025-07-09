@@ -26,6 +26,7 @@ const router = createBrowserRouter(
         </Route>
         <Route path="/aluno" element={<DefaultLayout />}>
           <Route index element={<DashboardAluno />} />
+          <Route path='/aluno/visualizar-monitoria/:id' element={<VisualizarMonitoria />} />
         </Route>
       </Route>
       <Route path="/login" element={<Login />} />

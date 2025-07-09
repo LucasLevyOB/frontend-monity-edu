@@ -3,8 +3,10 @@ import { Button, Flex, Heading, Stack, Text, Box, HStack, VStack, Badge, Spinner
 import { useParams, useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
 import { toaster } from "../components/ui/toaster";
+import { store } from "../stores";
 
 const VisualizarMonitoria = () => {
+  const userType = store.getState().auth.user?.userType;
   const { id } = useParams();
   const navigate = useNavigate();
   const [monitoria, setMonitoria] = useState(null);
@@ -12,6 +14,10 @@ const VisualizarMonitoria = () => {
   const [error, setError] = useState("");
 
   const returnToHome = () => {
+    if (userType === 'ALUNO') {
+      navigate("/aluno");
+      return;
+    }
     navigate("/monitor");
   };
 
@@ -58,7 +64,15 @@ const VisualizarMonitoria = () => {
     return timeString;
   };
 
-  const handleEditar = () => {
+  const handleClick = () => {
+    if (userType === 'ALUNO') {
+      navigate('/aluno');
+      toaster.create({
+        type: "success",
+        description: "Inscrição realizada com sucesso!"
+      });
+      return;
+    }
     navigate(`/monitor/editar-monitoria/${id}`);
   };
 
@@ -223,20 +237,29 @@ const VisualizarMonitoria = () => {
       </VStack>
 
       <Flex justifyContent="flex-end" mt={12} gap={4}>
-        <Button
+
+        {userType === 'MONITOR' && (<Button
           variant="outline"
           colorPalette="gray"
           mr="auto"
           onClick={handleGerarCertificado}
+
         >
           Gerar Certificado
-        </Button>
-        <Button colorPalette="gray" variant="outline" mr={4} onClick={returnToHome}>Cancelar</Button>
+        </Button>)}
+        
+        <Button 
+        colorPalette="gray" 
+        variant="outline" 
+        mr={4} 
+        onClick={returnToHome}
+        >Voltar</Button>
+
         <Button
           colorPalette="blue"
-          onClick={handleEditar}
+          onClick={handleClick}
         >
-          Editar
+          {userType === 'MONITOR' ? 'Editar' : 'Inscrever-se'}
         </Button>
       </Flex>
     </Stack>
