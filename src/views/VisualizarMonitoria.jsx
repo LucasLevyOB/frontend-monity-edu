@@ -3,6 +3,7 @@ import { Button, Flex, Heading, Stack, Text, Box, HStack, VStack, Badge, Spinner
 import { useParams, useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
 import { toaster } from "../components/ui/toaster";
+import StarRating from "../components/StarComponent";
 
 const VisualizarMonitoria = () => {
   const { id } = useParams();
@@ -154,6 +155,27 @@ const VisualizarMonitoria = () => {
             </HStack>
           </VStack>
         </Box>
+
+        <Box w="100%">
+          <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
+            Monitor
+          </Text>
+          <Text fontSize="md">
+            {monitoria.nomeMonitor}
+          </Text>
+        </Box>
+
+        {userType === 'ALUNO' && (<>
+          <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
+            Avaliar Monitoria
+          </Text>
+          <StarRating 
+          maxStars={5}
+          initialRating={0}
+          onRatingChange={(newValue) => console.log(newValue)}
+          size={24}
+        />
+        </>)}
 
         <Box w="100%">
           <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
