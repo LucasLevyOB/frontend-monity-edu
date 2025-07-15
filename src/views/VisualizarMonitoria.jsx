@@ -62,12 +62,30 @@ const VisualizarMonitoria = () => {
     navigate(`/monitor/editar-monitoria/${id}`);
   };
 
-  const handleGerarCertificado = () => {
+  const handleGerarCertificado = async () => {
+    const api = new ApiService();
 
     toaster.create({
       type: "info",
-      description: "Funcionalidade de gerar certificado em desenvolvimento",
+      description: "Gerando certificado",
     });
+
+    const response = await api.gerarCertificado(monitoria.id);
+
+    if (!response.success) {
+      toaster.create({
+        type: "error",
+        description: "Desculpe, ocorreu um erro ao gerar o certificado.",
+      });
+      return;
+    }
+
+    toaster.create({
+      type: "success",
+      description: "Certificado gerado com sucesso.",
+    });
+
+    // baixar o certificado
   };
 
   if (loading) {

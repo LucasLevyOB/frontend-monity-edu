@@ -13,7 +13,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const EditarMonitoria = () => {
   const resolver = useYupValidationResolver(validationSchemaEditarMonitoria);
-  const { handleSubmit, register, formState: { errors, isValid }, setValue } = useForm({ resolver });
+  const { handleSubmit, register, formState: { errors }, setValue } = useForm({ resolver });
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const { id } = useParams();
@@ -55,10 +55,6 @@ const EditarMonitoria = () => {
   }, [id, setValue, navigate]);
 
   const sendData = async (data) => {
-    if (!isValid) {
-      return;
-    }
-
     const apiService = new ApiService();
 
     const payload = {

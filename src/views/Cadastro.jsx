@@ -11,17 +11,16 @@ import Logo from '../assets/logo.png';
 
 const Cadastro = () => {
   const resolver = useYupValidationResolver(validationSchemaCadastro);
-  const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm({ resolver, defaultValues: {
-    tipoUsuario: "aluno"}});
+  const { handleSubmit, register, formState: { errors }, watch } = useForm({
+    resolver, defaultValues: {
+      tipoUsuario: "aluno"
+    }
+  });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  
+
 
   const sendData = async (data) => {
-    if (!isValid) {
-      return;
-    }
-    
     const apiService = new ApiService();
 
     setLoading(true);
@@ -45,122 +44,122 @@ const Cadastro = () => {
   };
 
   return <Flex height="100vh" backgroundColor="blue" p={4} alignItems={"center"} justifyContent="center">
-      <Flex 
-        direction="column" 
-        gap={6} 
-        w="100%" 
-        maxW="1200px" 
-        p={12}
-        bg="white"
-        borderRadius="16px"
-        boxShadow="xl"
-        alignItems={"center"}
-      >
+    <Flex
+      direction="column"
+      gap={6}
+      w="100%"
+      maxW="1200px"
+      p={12}
+      bg="white"
+      borderRadius="16px"
+      boxShadow="xl"
+      alignItems={"center"}
+    >
       <Stack textAlign="center" gap={4}>
         <Flex justify="center">
           <Image src={Logo} alt="MonityEdu" h="80px" w="auto" />
         </Flex>
         <Text fontSize="md" color="gray.700">Bem-vindo à MonityEdu</Text>
       </Stack>
-      
+
       <Stack w="100%" maxW="500px" mx="auto" mt={6} gap={6}>
-        <form style={{width: "100%"}} onSubmit={handleSubmit(async (data) => await sendData(data))}>
-        <Stack gap={4}>
-           <MeField 
-            register={register("nome")} 
-            label="Nome" 
-            type="name"
-            placeholder="Digite seu nome"
-            customError={errors.nome?.message} 
-          />
-          <MeField 
-            register={register("email")} 
-            label="Email" 
-            type="email"
-            placeholder="Digite seu email"
-            customError={errors.email?.message} 
-          />
-          <MeField 
-            register={register("senha")} 
-            label="Senha" 
-            type="password"
-            placeholder="Digite sua senha"
-            customError={errors.senha?.message} 
-          />
-          <MeField 
-            register={register("confirmaSenha")} 
-            label="Confirme sua senha" 
-            type="password"
-            placeholder="Confirme sua senha"
-            customError={errors.confirmaSenha?.message} 
-          />
+        <form style={{ width: "100%" }} onSubmit={handleSubmit(async (data) => await sendData(data))}>
+          <Stack gap={4}>
+            <MeField
+              register={register("nome")}
+              label="Nome"
+              type="name"
+              placeholder="Digite seu nome"
+              customError={errors.nome?.message}
+            />
+            <MeField
+              register={register("email")}
+              label="Email"
+              type="email"
+              placeholder="Digite seu email"
+              customError={errors.email?.message}
+            />
+            <MeField
+              register={register("senha")}
+              label="Senha"
+              type="password"
+              placeholder="Digite sua senha"
+              customError={errors.senha?.message}
+            />
+            <MeField
+              register={register("confirmaSenha")}
+              label="Confirme sua senha"
+              type="password"
+              placeholder="Confirme sua senha"
+              customError={errors.confirmaSenha?.message}
+            />
 
-          {watch('tipoUsuario') === "aluno" && (
+            {watch('tipoUsuario') === "aluno" && (
+              <Box>
+                <Text fontSize="sm" fontWeight="medium" mb={2} color="gray.700">Série Escolar</Text>
+                <select
+                  {...register("serieEscolar")}
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    border: `2px solid ${errors.tipoUsuario ? "#E53E3E" : "#E2E8F0"}`,
+                    borderRadius: "8px",
+                    fontSize: "16px",
+                    backgroundColor: "white",
+                    outline: "none"
+                  }}
+                >
+                  <option value="">Selecione a série</option>
+                  <option value="PRIMEIRO_ANO_ENSINO_MEDIO">Primeiro ano do ensino médio</option>
+                  <option value="SEGUNDO_ANO_ENSINO_MEDIO">Segundo ano do ensino médio</option>
+                  <option value="TERCEIRO_ANO_ENSINO_MEDIO">Terceiro ano do ensino médio</option>
+                </select>
+                {errors.serieEscolar && (
+                  <Text color="red.500" fontSize="sm" mt={1}>
+                    {errors.serieEscolar.message}
+                  </Text>
+                )}
+              </Box>
+            )}
+
             <Box>
-            <Text fontSize="sm" fontWeight="medium" mb={2} color="gray.700">Série Escolar</Text>
-            <select 
-              {...register("serieEscolar")}
-              style={{
-                width: "100%",
-                padding: "12px",
-                border: `2px solid ${errors.tipoUsuario ? "#E53E3E" : "#E2E8F0"}`,
-                borderRadius: "8px",
-                fontSize: "16px",
-                backgroundColor: "white",
-                outline: "none"
-              }}
-            >
-              <option value="">Selecione a série</option>
-              <option value="PRIMEIRO_ANO_ENSINO_MEDIO">Primeiro ano do ensino médio</option>
-              <option value="SEGUNDO_ANO_ENSINO_MEDIO">Segundo ano do ensino médio</option>
-              <option value="TERCEIRO_ANO_ENSINO_MEDIO">Terceiro ano do ensino médio</option>
-            </select>
-            {errors.serieEscolar && (
-              <Text color="red.500" fontSize="sm" mt={1}>
-                {errors.serieEscolar.message}
-              </Text>
-            )}
-          </Box>
-          )}
+              <Text fontSize="sm" fontWeight="medium" mb={2} color="gray.700">Tipo de usuário</Text>
+              <select
+                {...register("tipoUsuario")}
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  border: `2px solid ${errors.tipoUsuario ? "#E53E3E" : "#E2E8F0"}`,
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  backgroundColor: "white",
+                  outline: "none"
+                }}
+              >
+                <option value="aluno">Aluno</option>
+                <option value="monitor">Monitor</option>
+              </select>
+              {errors.tipoUsuario && (
+                <Text color="red.500" fontSize="sm" mt={1}>
+                  {errors.tipoUsuario.message}
+                </Text>
+              )}
+            </Box>
+          </Stack>
 
-          <Box>
-            <Text fontSize="sm" fontWeight="medium" mb={2} color="gray.700">Tipo de usuário</Text>
-            <select 
-              {...register("tipoUsuario")}
-              style={{
-                width: "100%",
-                padding: "12px",
-                border: `2px solid ${errors.tipoUsuario ? "#E53E3E" : "#E2E8F0"}`,
-                borderRadius: "8px",
-                fontSize: "16px",
-                backgroundColor: "white",
-                outline: "none"
-              }}
-            >
-              <option value="aluno">Aluno</option>
-              <option value="monitor">Monitor</option>
-            </select>
-            {errors.tipoUsuario && (
-              <Text color="red.500" fontSize="sm" mt={1}>
-                {errors.tipoUsuario.message}
-              </Text>
-            )}
-          </Box>
-        </Stack>
-        
-        <Button 
-          type="submit" 
-          colorPalette="blue" 
-          loading={loading}
-          w="100%"
-          mt={6}
-        >
-          Cadastrar
-        </Button>
-      </form>
+          <Button
+            type="submit"
+            colorPalette="blue"
+            loading={loading}
+            w="100%"
+            mt={6}
+          >
+            Cadastrar
+          </Button>
+        </form>
       </Stack>
-      </Flex>
     </Flex>
+  </Flex>;
 };
 
 export default Cadastro;
