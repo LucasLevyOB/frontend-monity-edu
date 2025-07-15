@@ -172,7 +172,7 @@ export default class ApiService {
   async obterMonitoria(id) {
     try {
       const response = await this.#request.get(`/monitorias/${id}`);
-      
+
       return {
         success: response.data.status === "success" && response.status === 200,
         data: response.data.data,
@@ -180,7 +180,7 @@ export default class ApiService {
       };
     } catch (error) {
       console.error("Erro ao obter monitoria:", error);
-      
+
       if (error.response) {
         return {
           success: false,
@@ -220,6 +220,38 @@ export default class ApiService {
       return {
         success: false,
         message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao atualizar a monitoria.",
+      };
+    }
+  }
+
+  async cancelarMonitoria(id) {
+    try {
+      const response = await this.#request.patch(`/monitorias/${id}/cancelar`, {});
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao cancelar a monitoria.",
+      };
+    }
+  }
+
+  async marcarMonitoriaComoRealizada(id) {
+    try {
+      const response = await this.#request.patch(`/monitorias/${id}/realizada`, {});
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao marcar a monitoria como realizada.",
       };
     }
   }
