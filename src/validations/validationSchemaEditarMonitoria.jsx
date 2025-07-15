@@ -2,7 +2,7 @@ import * as Yup from "yup";
 
 export const validationSchemaEditarMonitoria = Yup.object().shape({
 
-  titulo: Yup.string(),
+  titulo: Yup.string().required("Título é obrigatório"),
 
   data: Yup.date()
     .typeError("Data deve ser uma data válida"),
