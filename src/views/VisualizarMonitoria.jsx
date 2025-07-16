@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Button, Flex, Heading, Stack, Text, Box, HStack, VStack, Badge, Spinner, Alert } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack, Text, Box, HStack, VStack, Badge, Spinner, Alert, Menu, Portal } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
 import { toaster } from "../components/ui/toaster";
+import MeDropdownButton from "../components/MeDropdownButton";
+import useMonitoria from "../hooks/useMonitoria";
 
 const VisualizarMonitoria = () => {
   const { id } = useParams();
@@ -62,13 +64,7 @@ const VisualizarMonitoria = () => {
     navigate(`/monitor/editar-monitoria/${id}`);
   };
 
-  const handleGerarCertificado = () => {
-
-    toaster.create({
-      type: "info",
-      description: "Funcionalidade de gerar certificado em desenvolvimento",
-    });
-  };
+  const { items } = useMonitoria({ monitoria, onCancelar: returnToHome, onRealizada: fetchMonitoria });
 
   if (loading) {
     return (
@@ -222,16 +218,9 @@ const VisualizarMonitoria = () => {
         )}
       </VStack>
 
-      <Flex justifyContent="flex-end" mt={12} gap={4}>
-        <Button
-          variant="outline"
-          colorPalette="gray"
-          mr="auto"
-          onClick={handleGerarCertificado}
-        >
-          Gerar Certificado
-        </Button>
-        <Button colorPalette="gray" variant="outline" mr={4} onClick={returnToHome}>Cancelar</Button>
+      <Flex justifyContent="flex-end" mt={12} gap={8}>
+        <Button colorPalette="gray" variant="outline" mr="auto" onClick={returnToHome}>Voltar</Button>
+        <MeDropdownButton items={items} button={{ text: "Ações" }} />
         <Button
           colorPalette="blue"
           onClick={handleEditar}
