@@ -1,8 +1,12 @@
 import { Button, Card, HStack, Text } from "@chakra-ui/react";
 import { Tag } from "./ui/tag";
 import Helpers from "../Helpers";
+import useMonitoria from "../hooks/useMonitoria";
+import MeDropdownButton from "./MeDropdownButton";
 
-const MeCard = ({ monitoria, visualizarMonitoria, ...restProps }) => {
+const MeCard = ({ monitoria, visualizarMonitoria, refreshData, ...restProps }) => {
+  const { items } = useMonitoria({ monitoria, onCancelar: refreshData, onRealizada: refreshData });
+
   const handleJoinMeet = () => {
     window.open(monitoria.linkReuniao, "_blank");
   };
@@ -14,7 +18,10 @@ const MeCard = ({ monitoria, visualizarMonitoria, ...restProps }) => {
   return (
     <Card.Root {...restProps} minW="340px" minH="324px">
       <Card.Header>
-        <Card.Title mt="2" textStyle="md" textAlign="center">{monitoria.titulo}</Card.Title>
+        <HStack alignItems="center" justifyContent="space-between">
+          <Card.Title mt="2" textStyle="md" textAlign="center">{monitoria.titulo}</Card.Title>
+          <MeDropdownButton items={items} button={{ variant: "ghost" }} />
+        </HStack>
       </Card.Header>
       <Card.Body>
         <Card.Description lineClamp="4" textAlign="justify" mb={2}>
