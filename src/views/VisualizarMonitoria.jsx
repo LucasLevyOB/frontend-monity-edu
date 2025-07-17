@@ -3,10 +3,12 @@ import { Button, Flex, Heading, Stack, Text, Box, HStack, VStack, Badge, Spinner
 import { useParams, useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
 import { toaster } from "../components/ui/toaster";
+import { store } from "../stores";
 import MeDropdownButton from "../components/MeDropdownButton";
 import useMonitoria from "../hooks/useMonitoria";
 
 const VisualizarMonitoria = () => {
+  const userType = store.getState().auth.user?.userType;
   const { id } = useParams();
   const navigate = useNavigate();
   const [monitoria, setMonitoria] = useState(null);
@@ -14,6 +16,10 @@ const VisualizarMonitoria = () => {
   const [error, setError] = useState("");
 
   const returnToHome = () => {
+    if (userType === 'ALUNO') {
+      navigate("/aluno");
+      return;
+    }
     navigate("/monitor");
   };
 
@@ -60,7 +66,15 @@ const VisualizarMonitoria = () => {
     return timeString;
   };
 
-  const handleEditar = () => {
+  const handleClick = () => {
+    if (userType === 'ALUNO') {
+      navigate('/aluno');
+      toaster.create({
+        type: "success",
+        description: "Inscrição realizada com sucesso!"
+      });
+      return;
+    }
     navigate(`/monitor/editar-monitoria/${id}`);
   };
 
@@ -220,12 +234,12 @@ const VisualizarMonitoria = () => {
 
       <Flex justifyContent="flex-end" mt={12} gap={8}>
         <Button colorPalette="gray" variant="outline" mr="auto" onClick={returnToHome}>Voltar</Button>
-        <MeDropdownButton items={items} button={{ text: "Ações" }} />
+        {userType === 'MONITOR' && <MeDropdownButton items={items} button={{ text: "Ações" }} />}
         <Button
           colorPalette="blue"
-          onClick={handleEditar}
+          onClick={handleClick}
         >
-          Editar
+          {userType === 'MONITOR' ? 'Editar' : 'Inscrever-se'}
         </Button>
       </Flex>
     </Stack>
