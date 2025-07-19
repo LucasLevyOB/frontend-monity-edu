@@ -224,27 +224,9 @@ export default class ApiService {
     }
   }
 
-  async certificados(filter, page) {
+  async cancelarMonitoria(id) {
     try {
-      const response = await this.#request.get(`/certificados?${this.#formatStrFilter(filter)}`);
-
-      return {
-        success: response.data.status === "success" && response.status === 200,
-        data: { data: response.data.data }
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar os certificados.",
-      };
-    }
-  }
-
-  async baixarCertificado(id) {
-    try {
-      const response = await this.#request.get(`/certificados/${id}/download`, {
-        responseType: "blob",
-      });
+      const response = await this.#request.patch(`/monitorias/${id}/cancelar`, {});
 
       return {
         success: response.data.status === "success" && response.status === 200,
@@ -253,16 +235,14 @@ export default class ApiService {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar o certificado.",
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao cancelar a monitoria.",
       };
     }
   }
 
-  async gerarCertificado(id) {
+  async marcarMonitoriaComoRealizada(id) {
     try {
-      const response = await this.#request.get(`/certificados/gerar/${id}`, {
-        responseType: "blob",
-      });
+      const response = await this.#request.patch(`/monitorias/${id}/realizada`, {});
 
       return {
         success: response.data.status === "success" && response.status === 200,
@@ -271,7 +251,7 @@ export default class ApiService {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao gerar o certificado.",
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao marcar a monitoria como realizada.",
       };
     }
   }

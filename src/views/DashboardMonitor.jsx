@@ -16,7 +16,7 @@ import { MeAvisoContaNaoVerificada } from "../components/MeAvisoContaNaoVerifica
 import { EmptyState } from "../components/ui/empty-state";
 import EmptyImage from "../assets/empty.png";
 
-const ExibirMonitorias = ({ monitorias, fetching, ...restProps }) => {
+const ExibirMonitorias = ({ monitorias, fetching, refreshData, ...restProps }) => {
   const navigate = useNavigate();
 
   const visualizarMonitoria = (id) => {
@@ -28,7 +28,7 @@ const ExibirMonitorias = ({ monitorias, fetching, ...restProps }) => {
       {
         monitorias.length ? (
           monitorias.map(monitoria => (
-            <MeCard monitoria={monitoria} key={monitoria.id} visualizarMonitoria={visualizarMonitoria} maxW="340px" flexShrink={0} />
+            <MeCard monitoria={monitoria} key={monitoria.id} visualizarMonitoria={visualizarMonitoria} refreshData={refreshData} maxW="340px" flexShrink={0} />
           ))
         ) : (
           <EmptyState title="Não há monitorias" image={EmptyImage} />
@@ -256,7 +256,7 @@ const DashboardMonitor = () => {
               <Alert.Title>{nextMonitoriasError}</Alert.Title>
             </Alert.Root>
           ) : credenciado ? (
-            fechingNextMonitorias.fetching && fechingNextMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={nextMonitorias.data} fetching={fechingNextMonitorias} onScroll={onScrollNextMonitorias} />
+            fechingNextMonitorias.fetching && fechingNextMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={nextMonitorias.data} fetching={fechingNextMonitorias} refreshData={fetchMonitorias} onScroll={onScrollNextMonitorias} />
           ) : (
             <MeAvisoContaNaoVerificada m="auto" />
           )
@@ -271,7 +271,7 @@ const DashboardMonitor = () => {
               <Alert.Title>{pastMonitoriasError}</Alert.Title>
             </Alert.Root>
           ) : credenciado ? (
-            fechingPastMonitorias.fetching && fechingPastMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={pastMonitorias.data} fetching={fechingPastMonitorias} onScroll={onScrollPastMonitorias} />
+            fechingPastMonitorias.fetching && fechingPastMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={pastMonitorias.data} fetching={fechingPastMonitorias} refreshData={fetchMonitorias} onScroll={onScrollPastMonitorias} />
           ) : (
             <MeAvisoContaNaoVerificada m="auto" />
           )

@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { Button, Flex, Heading, Stack, Text, Box, HStack, VStack, Badge, Spinner, Alert } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack, Text, Box, HStack, VStack, Badge, Spinner, Alert, Menu, Portal } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
 import { toaster } from "../components/ui/toaster";
+import StarRating from "../components/StarComponent";
+import { store } from "../stores";
+import MeDropdownButton from "../components/MeDropdownButton";
+import useMonitoria from "../hooks/useMonitoria";
 
 const VisualizarMonitoria = () => {
+  const userType = store.getState().auth.user?.userType;
   const { id } = useParams();
   const navigate = useNavigate();
   const [monitoria, setMonitoria] = useState(null);
@@ -12,6 +17,10 @@ const VisualizarMonitoria = () => {
   const [error, setError] = useState("");
 
   const returnToHome = () => {
+    if (userType === 'ALUNO') {
+      navigate("/aluno");
+      return;
+    }
     navigate("/monitor");
   };
 
@@ -58,35 +67,19 @@ const VisualizarMonitoria = () => {
     return timeString;
   };
 
-  const handleEditar = () => {
-    navigate(`/monitor/editar-monitoria/${id}`);
-  };
-
-  const handleGerarCertificado = async () => {
-    const api = new ApiService();
-
-    toaster.create({
-      type: "info",
-      description: "Gerando certificado",
-    });
-
-    const response = await api.gerarCertificado(monitoria.id);
-
-    if (!response.success) {
+  const handleClick = () => {
+    if (userType === 'ALUNO') {
+      navigate('/aluno');
       toaster.create({
-        type: "error",
-        description: "Desculpe, ocorreu um erro ao gerar o certificado.",
+        type: "success",
+        description: "Inscrição realizada com sucesso!"
       });
       return;
     }
-
-    toaster.create({
-      type: "success",
-      description: "Certificado gerado com sucesso.",
-    });
-
-    // baixar o certificado
+    navigate(`/monitor/editar-monitoria/${id}`);
   };
+
+  const { items } = useMonitoria({ monitoria, onCancelar: returnToHome, onRealizada: fetchMonitoria });
 
   if (loading) {
     return (
@@ -175,6 +168,27 @@ const VisualizarMonitoria = () => {
 
         <Box w="100%">
           <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
+            Monitor
+          </Text>
+          <Text fontSize="md">
+            {monitoria.nomeMonitor}
+          </Text>
+        </Box>
+
+        {userType === 'ALUNO' && (<>
+          <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
+            Avaliar Monitoria
+          </Text>
+          <StarRating
+            maxStars={5}
+            initialRating={0}
+            onRatingChange={(newValue) => console.log(newValue)}
+            size={24}
+          />
+        </>)}
+
+        <Box w="100%">
+          <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
             Matéria
           </Text>
           <Text fontSize="md">
@@ -240,21 +254,14 @@ const VisualizarMonitoria = () => {
         )}
       </VStack>
 
-      <Flex justifyContent="flex-end" mt={12} gap={4}>
-        <Button
-          variant="outline"
-          colorPalette="gray"
-          mr="auto"
-          onClick={handleGerarCertificado}
-        >
-          Gerar Certificado
-        </Button>
-        <Button colorPalette="gray" variant="outline" mr={4} onClick={returnToHome}>Cancelar</Button>
+      <Flex justifyContent="flex-end" mt={12} gap={8}>
+        <Button colorPalette="gray" variant="outline" mr="auto" onClick={returnToHome}>Voltar</Button>
+        {userType === 'MONITOR' && <MeDropdownButton items={items} button={{ text: "Ações" }} />}
         <Button
           colorPalette="blue"
-          onClick={handleEditar}
+          onClick={handleClick}
         >
-          Editar
+          {userType === 'MONITOR' ? 'Editar' : 'Inscrever-se'}
         </Button>
       </Flex>
     </Stack>
