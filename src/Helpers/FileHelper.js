@@ -6,14 +6,13 @@ dayjs.locale("pt-br");
 class FileHelper {
     /**
      * Baixa um arquivo por url
-     * @param {string} url
-     * @param {string} id
+     * @param {URL} url
+     * @param {string} nome
      */
-    downloadByUrl(url, id) {
-        const linkUrl = window.URL.createObjectURL(new Blob([url]));
+    downloadByUrl(url, nome) {
         const link = document.createElement("a");
-        link.href = linkUrl;
-        link.setAttribute("download", `certificado_${id}.pdf`);
+        link.href = url;
+        link.setAttribute("download", nome);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

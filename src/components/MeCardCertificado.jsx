@@ -15,7 +15,7 @@ const MeCard = ({ certificado, ...restProps }) => {
     const response = await api.baixarCertificado(certificado.id);
     setLoading(false);
 
-    if (!response.success) {
+    if (!response.success || !response.data) {
       toaster.create({
         type: "error",
         description: response.message ?? "Desculpe, ocorreu um erro ao baixar o certificado.",
@@ -28,20 +28,20 @@ const MeCard = ({ certificado, ...restProps }) => {
       description: "Arquivo encontrado, em instantes o download deve começar.",
     });
 
-    Helpers.FileHelper.downloadByUrl(response.data);
+    Helpers.FileHelper.downloadByUrl(response.data.url, response.data.nome);
   };
 
   return (
     <Card.Root {...restProps} minW="340px" minH="324px">
       <Card.Header>
-        <Card.Title mt="2" textStyle="md" textAlign="center">{certificado.monitoria.titulo}</Card.Title>
+        <Card.Title mt="2" textStyle="md" textAlign="center">{certificado.tituloMonitoria}</Card.Title>
       </Card.Header>
       <Card.Body>
         <Card.Description lineClamp="4" textAlign="justify" mb={2}>
-          Certificado gerado para a monitoria de {certificado.monitoria.titulo}.
+          Certificado gerado para a monitoria de {certificado.tituloMonitoria}.
         </Card.Description>
         <HStack mt={6}>
-          <Text fontSize="xs" color="GrayText" mr="auto">Gerado em {Helpers.DateHelper.format(certificado.data, "DD/MM/YYYY")}</Text>
+          <Text fontSize="xs" color="GrayText" mr="auto">Gerado em {Helpers.DateHelper.format(certificado.dataCriacao, "DD/MM/YYYY HH:MM:ss")}</Text>
         </HStack>
       </Card.Body>
       <Card.Footer justifyContent="flex-end">
