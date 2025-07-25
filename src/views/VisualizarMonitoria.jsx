@@ -259,6 +259,7 @@ const VisualizarMonitoria = () => {
         {userType === 'MONITOR' && <MeDropdownButton items={items} button={{ text: "Ações" }} />}
         <Button
           colorPalette="blue"
+          disabled={!monitoria.status || monitoria.status === 'REALIZADA'}
           onClick={handleClick}
         >
           {userType === 'MONITOR' ? 'Editar' : 'Inscrever-se'}

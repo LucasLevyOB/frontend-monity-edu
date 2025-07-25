@@ -31,7 +31,7 @@ const ExibirMonitorias = ({ monitorias, fetching, refreshData, ...restProps }) =
             <MeCard monitoria={monitoria} key={monitoria.id} visualizarMonitoria={visualizarMonitoria} refreshData={refreshData} maxW="340px" flexShrink={0} />
           ))
         ) : (
-          <EmptyState description="Não há monitorias" image={EmptyImage} />
+          <EmptyState title="Não há monitorias" image={EmptyImage} />
         )
       }
       {
