@@ -18,7 +18,7 @@ const MeCard = ({ certificado, ...restProps }) => {
     if (!response.success || !response.data) {
       toaster.create({
         type: "error",
-        description: response.message ?? "Desculpe, ocorreu um erro ao baixar o certificado.",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao baixar o certificado.",
       });
       return;
     }

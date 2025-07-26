@@ -133,9 +133,9 @@ const DashboardAluno = () => {
     if (!response.success) {
       toaster.create({
         type: "error",
-        description: response.message ?? "Desculpe, ocorreu um erro ao buascar as próximas monitorias.",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao buascar as próximas monitorias.",
       });
-      setNextMonitoriasError(response.message ?? "Desculpe, ocorreu um erro ao buascar as próximas monitorias.");
+      setNextMonitoriasError(response.message ? response.message : "Desculpe, ocorreu um erro ao buascar as próximas monitorias.");
 
       return;
     }
@@ -170,9 +170,9 @@ const DashboardAluno = () => {
     if (!response.success) {
       toaster.create({
         type: "error",
-        description: response.message ?? "Desculpe, ocorreu um erro ao buascar as monitorias passadas.",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao buascar as monitorias passadas.",
       });
-      setPastMonitoriasError(response.message ?? "Desculpe, ocorreu um erro ao buascar as monitorias passadas.");
+      setPastMonitoriasError(response.message ? response.message : "Desculpe, ocorreu um erro ao buascar as monitorias passadas.");
 
       return;
     }

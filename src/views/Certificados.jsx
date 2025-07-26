@@ -15,7 +15,6 @@ import { MdSearch } from "react-icons/md";
 
 const ExibirCertificados = ({ certificados, fetching, ...restProps }) => {
   const navigate = useNavigate();
-  console.log(certificados);
   const visualizarMonitoria = (id) => {
     navigate(`/monitor/visualizar-monitoria/${id}`);
   };
@@ -107,9 +106,9 @@ const Certificados = () => {
     if (!response.success) {
       toaster.create({
         type: "error",
-        description: response.message ?? "Desculpe, ocorreu um erro ao buascar os certificados.",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao buascar os certificados.",
       });
-      setMessageError(response.message ?? "Desculpe, ocorreu um erro ao buascar os certificados.");
+      setMessageError(response.message ? response.message : "Desculpe, ocorreu um erro ao buascar os certificados.");
 
       return;
     }

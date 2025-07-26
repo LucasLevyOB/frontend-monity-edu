@@ -15,10 +15,6 @@ const MeField = ({ label, value, customError = "", register, startElement, type,
     />
   ) : undefined;
 
-  useEffect(() => {
-    console.log('customError: ', customError);
-  }, [customError]);
-
   return (
     <Field.Root invalid={customError} {...restProps}>
       <Field.Label>
