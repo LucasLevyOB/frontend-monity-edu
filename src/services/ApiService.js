@@ -224,6 +224,38 @@ export default class ApiService {
     }
   }
 
+   async cancelarMonitoria(id) {
+    try {
+      const response = await this.#request.patch(`/monitorias/${id}/cancelar`, {});
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao cancelar a monitoria.",
+      };
+    }
+  }
+
+  async marcarMonitoriaComoRealizada(id) {
+    try {
+      const response = await this.#request.patch(`/monitorias/${id}/realizada`, {});
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao marcar a monitoria como realizada.",
+      };
+    }
+  }
+
   async certificados(filter, page) {
     try {
       const response = await this.#request.get(`/certificados?${this.#formatStrFilter(filter)}`);
