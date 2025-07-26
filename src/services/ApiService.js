@@ -331,4 +331,25 @@ export default class ApiService {
       };
     }
   }
+
+  /**
+   * 
+   * @param {*} filter 
+   * @returns {Promise<ApiResponse<{Object[]>>}
+   */
+  async minhasInscricoes(filter, status) {
+    try {
+      const response = await this.#request.get(`/alunos/minhas-inscricoes?status=${status}${this.#formatStrFilter(filter)}`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: { data: response.data.data },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar as monitorias inscritas.",
+      };
+    }
+  }
 }

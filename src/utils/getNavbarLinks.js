@@ -13,7 +13,16 @@ const monitorLinks = [
   }
 ];
 
-const alunoLinks = [];
+const alunoLinks = [
+  {
+    to: '/aluno',
+    text: 'Home'
+  },
+  {
+    to: '/aluno/monitorias',
+    text: 'Monitorias'
+  },
+];
 
 /**
  * 
