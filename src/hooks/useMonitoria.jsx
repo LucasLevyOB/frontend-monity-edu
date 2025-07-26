@@ -3,17 +3,38 @@ import { toaster } from "../components/ui/toaster";
 import ApiService from "../services/ApiService";
 import Helpers from "../Helpers";
 import { MdCheck, MdDeleteOutline, MdFileDownload } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const useMonitoria = ({ monitoria, onCancelar, onRealizada }) => {
   const [loadingCancelar, setLoadingCancelar] = useState(false);
   const [loadingRealizada, setLoadingRealizada] = useState(false);
+  const navigate = useNavigate();
 
-  const handleGerarCertificado = () => {
+  const handleGerarCertificado = async () => {
+    const apiService = new ApiService();
 
     toaster.create({
       type: "info",
-      description: "Funcionalidade de gerar certificado em desenvolvimento",
+      description: "Gerando certificado da monitoria.",
     });
+
+    setLoadingCancelar(true);
+    const response = await apiService.gerarCertificado(monitoria.id);
+    setLoadingCancelar(false);
+
+    if (!response.success) {
+      toaster.create({
+        type: "error",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao gerar o certificado da monitoria",
+      });
+      return;
+    }
+
+    toaster.create({
+      type: "success",
+      description: "Certificado gerado com sucesso.",
+    });
+    navigate("/monitor/certificados");
   };
 
   const handleCancelar = async () => {

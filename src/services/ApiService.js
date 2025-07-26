@@ -124,6 +124,10 @@ export default class ApiService {
   #formatStrFilter(filter) {
     let strFilter = "";
 
+    if (filter.titulo?.trim()) {
+      strFilter += `&titulo=${filter.titulo}`;
+    }
+
     if (filter.topico?.trim()) {
       strFilter += `&topico=${filter.topico}`;
     }
@@ -256,49 +260,12 @@ export default class ApiService {
     }
   }
 
-  async certificados(filter, page) {
-    try {
-      const response = await this.#request.get(`/certificados?${this.#formatStrFilter(filter)}`);
-
-      return {
-        success: response.data.status === "success" && response.status === 200,
-        data: { data: response.data.data }
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar os certificados.",
-      };
-    }
-  }
-
-  async baixarCertificado(id) {
-    try {
-      const response = await this.#request.get(`/certificados/${id}/download`, {
-        responseType: "blob",
-      });
-
-      return {
-        success: response.data.status === "success" && response.status === 200,
-        data: response.data.data
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar o certificado.",
-      };
-    }
-  }
-
   async gerarCertificado(id) {
     try {
-      const response = await this.#request.get(`/certificados/gerar/${id}`, {
-        responseType: "blob",
-      });
+      const response = await this.#request.post(`/certificados`, { monitoriaId: id });
 
       return {
-        success: response.data.status === "success" && response.status === 200,
-        data: response.data.data
+        success: response.data.status === "success" && response.status === 201,
       };
     } catch (error) {
       return {
@@ -308,6 +275,83 @@ export default class ApiService {
     }
   }
 
+  /**
+   * 
+   * @param {String} id 
+   * @returns {Promise<ApiResponse<{nome: String, url: URL}>>}
+   */
+  async baixarCertificado(id) {
+    try {
+      const response = await this.#request.get(`/certificados/${id}/download`, {
+        responseType: "blob",
+      });
+
+      if (response.status !== 200) {
+        return {
+          success: false,
+          message: "Desculpe, ocorreu um erro ao baixar o certificado.",
+        };
+      }
+
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const nome = response.headers["content-disposition"]?.split("filename=")[1]?.replace(/"/g, "") || "certificado.pdf";
+      return {
+        success: true,
+        data: {
+          url,
+          nome
+        }
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao baixar o certificado.",
+      };
+    }
+  }
+
+  /**
+   * 
+   * @param {*} filter 
+   * @returns {Promise<ApiResponse<{id: String, nomeArquivo: String ,tituloMonitoria: String, dataCriacao: String}[]>>}
+   */
+  async certificados(filter) {
+    try {
+      const response = await this.#request.get(`/certificados?${this.#formatStrFilter(filter)}`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar os certificados.",
+      };
+    }
+  }
+
+  /**
+   * 
+   * @param {*} filter 
+   * @returns {Promise<ApiResponse<{Object[]>>}
+   */
+  async minhasInscricoes(filter, status) {
+    try {
+      const response = await this.#request.get(`/alunos/minhas-inscricoes?status=${status}${this.#formatStrFilter(filter)}`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: { data: response.data.data },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar as monitorias inscritas.",
+      };
+    }
+  }
   async inscreverAluno(id) {
     try {
       const response = await this.#request.post(`/monitorias/${id}/inscrever`);
@@ -323,4 +367,5 @@ export default class ApiService {
       };
     }
   }
+
 }

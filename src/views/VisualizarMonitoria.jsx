@@ -282,6 +282,7 @@ const VisualizarMonitoria = () => {
 
         <Button
           colorPalette="blue"
+          disabled={!monitoria.status || monitoria.status === 'REALIZADA'}
           onClick={handleClick}
         >
           {userType === 'MONITOR' ? 'Editar' : 'Inscrever-se'}

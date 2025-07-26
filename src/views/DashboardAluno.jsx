@@ -31,7 +31,7 @@ const ExibirMonitorias = ({ monitorias, fetching, ...restProps }) => {
             <MeCard monitoria={monitoria} key={monitoria.id} visualizarMonitoria={visualizarMonitoria} maxW="340px" flexShrink={0} />
           ))
         ) : (
-          <EmptyState description="Não há monitorias" image={EmptyImage} />
+          <EmptyState title="Não há monitorias" image={EmptyImage} />
         )
       }
       {
@@ -95,7 +95,6 @@ const DashboardAluno = () => {
   });
   const [searcText, setSearchText] = useState("");
   const [filterDate, setFilterDate] = useState("");
-  const credenciado = store.getState().auth.user?.statusMonitor === "APROVADO";
   const [nextMonitoriasError, setNextMonitoriasError] = useState("");
   const [pastMonitoriasError, setPastMonitoriasError] = useState("");
 
@@ -124,7 +123,7 @@ const DashboardAluno = () => {
       type,
       firstTime: fechingNextMonitorias.firstTime,
     });
-    const response = await api.monitoriasProximas(filter, page);
+    const response = await api.minhasInscricoes(filter, "PENDENTE");
     setFetchingNextMonitorias({
       fetching: false,
       type,
@@ -161,7 +160,7 @@ const DashboardAluno = () => {
       type,
       firstTime: fechingPastMonitorias.firstTime,
     });
-    const response = await api.monitoriasPassadas(filter, page);
+    const response = await api.minhasInscricoes(filter, "REALIZADA");
     setFetchingPastMonitorias({
       fetching: false,
       type,
@@ -201,14 +200,10 @@ const DashboardAluno = () => {
   const [didMount, setDidMount] = useState(false);
 
   useEffect(() => {
-    if (!credenciado) {
-      return;
-    }
-
     debouncedFetch();
 
     return () => debouncedFetch.cancel();
-  }, [searcText, credenciado]);
+  }, [searcText]);
 
   useEffect(() => {
     if (!didMount) {
@@ -216,12 +211,8 @@ const DashboardAluno = () => {
       return;
     }
 
-    if (!credenciado) {
-      return;
-    }
-
     fetchMonitorias();
-  }, [filterDate, credenciado]);
+  }, [filterDate]);
 
   const onScrollPastMonitorias = (event) => {
     const { scrollLeft, scrollWidth, clientWidth } = event.target;
@@ -255,10 +246,8 @@ const DashboardAluno = () => {
               <Alert.Indicator />
               <Alert.Title>{nextMonitoriasError}</Alert.Title>
             </Alert.Root>
-          ) : credenciado ? (
-            fechingNextMonitorias.fetching && fechingNextMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={nextMonitorias.data} fetching={fechingNextMonitorias} onScroll={onScrollNextMonitorias} />
           ) : (
-            <MeAvisoContaNaoVerificada m="auto" />
+            fechingNextMonitorias.fetching && fechingNextMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={nextMonitorias.data} fetching={fechingNextMonitorias} onScroll={onScrollNextMonitorias} />
           )
         }
       </VStack>
@@ -270,10 +259,8 @@ const DashboardAluno = () => {
               <Alert.Indicator />
               <Alert.Title>{pastMonitoriasError}</Alert.Title>
             </Alert.Root>
-          ) : credenciado ? (
-            fechingPastMonitorias.fetching && fechingPastMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={pastMonitorias.data} fetching={fechingPastMonitorias} onScroll={onScrollPastMonitorias} />
           ) : (
-            <MeAvisoContaNaoVerificada m="auto" />
+            fechingPastMonitorias.fetching && fechingPastMonitorias.firstTime ? (<SkeletonMonitorias />) : <ExibirMonitorias monitorias={pastMonitorias.data} fetching={fechingPastMonitorias} onScroll={onScrollPastMonitorias} />
           )
         }
       </VStack>

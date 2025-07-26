@@ -33,7 +33,7 @@ const CadastrarMonitoria = () => {
 
     const payload = {
       ...data,
-      data: Helpers.DateHelper.format(data.data),
+      data: Helpers.DateHelper.format(data.data, 'YYYY-MM-DD'),
     };
 
     setLoading(true);
