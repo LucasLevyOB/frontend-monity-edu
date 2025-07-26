@@ -36,7 +36,7 @@ const VerificarMonitor = () => {
     if (!response.success) {
       toaster.create({
         type: "error",
-        description: "Desculpe, ocorreu um erro ao enviar os dados para a verificação de credêncimento",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao enviar os dados para a verificação de credêncimento",
       });
       return;
     }

@@ -96,6 +96,63 @@ export default class ApiService {
     }
   }
 
+  async editarUsuario(data, id, path = "/alunos") {
+    try {
+      const response = await this.#request.patch(`${path}/${id}`, data);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao atualizar o usuario.",
+      };
+    }
+  }
+
+  /**
+   * 
+   * @param {string} id 
+   * @returns 
+   */
+  async deletarAluno(id) {
+    try {
+      const response = await this.#request.delete(`/alunos/${id}`);
+
+      return {
+        success: response.status === 204,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao excluir a conta.",
+      };
+    }
+  }
+
+  /**
+   * 
+   * @param {string} id 
+   * @returns 
+   */
+  async deletarMonitor(id) {
+    try {
+      const response = await this.#request.delete(`/monitores/${id}`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao excluir a conta.",
+      };
+    }
+  }
+
   async cadastrarMonitoria(data) {
     try {
       const response = await this.#request.post("/monitorias", data, {

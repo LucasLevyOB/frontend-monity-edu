@@ -32,7 +32,7 @@ const EditarMonitoria = () => {
       if (!response.success) {
         toaster.create({
           type: "error",
-          description: "Erro ao carregar dados da monitoria",
+          description: response.message ? response.message : "Erro ao carregar dados da monitoria",
         });
         navigate(`/monitor`);
         return;
@@ -69,7 +69,7 @@ const EditarMonitoria = () => {
     if (!response.success) {
       toaster.create({
         type: "error",
-        description: "Desculpe, ocorreu um erro ao atualizar a monitoria",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao atualizar a monitoria",
       });
       return;
     }

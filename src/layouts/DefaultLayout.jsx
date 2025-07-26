@@ -11,6 +11,7 @@ const DefaultLayout = () => {
         <Outlet />
       </Box>
       <Toaster />
+      <div id="confirm-root"></div>
     </>
   );
 };
