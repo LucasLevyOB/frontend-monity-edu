@@ -15,7 +15,6 @@ import { MdSearch } from "react-icons/md";
 
 const ExibirCertificados = ({ certificados, fetching, ...restProps }) => {
   const navigate = useNavigate();
-  console.log(certificados);
   const visualizarMonitoria = (id) => {
     navigate(`/monitor/visualizar-monitoria/${id}`);
   };

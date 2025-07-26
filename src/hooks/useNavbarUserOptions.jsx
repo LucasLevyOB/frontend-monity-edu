@@ -65,7 +65,6 @@ const useNavbarUserOptions = () => {
     setDeleteMonitorLoading(true);
     const response = await apiService.deletarMonitor(id);
     setDeleteMonitorLoading(false);
-    console.log(response);
 
     if (!response.success) {
       toaster.create({

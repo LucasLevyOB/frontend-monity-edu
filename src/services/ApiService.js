@@ -65,8 +65,6 @@ export default class ApiService {
         senha
       });
 
-      console.log(response);
-
       return {
         success: response.data.status === "success" && response.status === 200,
         data: response.data.data
