@@ -228,7 +228,7 @@ export default class ApiService {
     }
   }
 
-  async cancelarMonitoria(id) {
+   async cancelarMonitoria(id) {
     try {
       const response = await this.#request.patch(`/monitorias/${id}/cancelar`, {});
 
@@ -352,4 +352,20 @@ export default class ApiService {
       };
     }
   }
+  async inscreverAluno(id) {
+    try {
+      const response = await this.#request.post(`/monitorias/${id}/inscrever`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao inscrever o aluno na monitoria.",
+      };
+    }
+  }
+
 }
