@@ -180,14 +180,14 @@ const VisualizarMonitoria = () => {
 
         {userType === 'ALUNO' && (<>
           <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
-            Avaliar Monitoria
+            Avaliação do monitor
           </Text>
-          <StarRating
-            maxStars={5}
-            initialRating={0}
-            onRatingChange={(newValue) => console.log(newValue)}
-            size={24}
-          />
+          <StarRating 
+          maxStars={5}
+          initialRating={monitoria.avaliacaoMediaMonitor}
+          size={24}
+          readonly={true}
+        />
         </>)}
 
         <Box w="100%">
