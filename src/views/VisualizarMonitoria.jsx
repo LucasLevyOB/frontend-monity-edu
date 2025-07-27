@@ -5,6 +5,8 @@ import ApiService from "../services/ApiService";
 import { toaster } from "../components/ui/toaster";
 import { store } from "../stores";
 import StarRating from "../components/StarComponent";
+import useMonitoria from "../hooks/useMonitoria";
+import MeDropdownButton from "../components/MeDropdownButton";
 
 const VisualizarMonitoria = () => {
   const userType = store.getState().auth.user?.userType;
@@ -70,7 +72,7 @@ const VisualizarMonitoria = () => {
     if (userType === 'ALUNO') {
 
       const data = await apiService.inscreverAluno(id);
-      
+
       toaster.create({
         type: data.success ? "success" : "error",
         description: data.success ? "Inscrição realizada com sucesso!" : "Erro ao se inscrever em monitoria"
@@ -80,13 +82,7 @@ const VisualizarMonitoria = () => {
     navigate(`/monitor/editar-monitoria/${id}`);
   };
 
-  const handleGerarCertificado = () => {
-
-    toaster.create({
-      type: "info",
-      description: "Funcionalidade de gerar certificado em desenvolvimento",
-    });
-  };
+  const { items } = useMonitoria({ monitoria, onCancelar: returnToHome, onRealizada: fetchMonitoria });
 
   if (loading) {
     return (
@@ -186,12 +182,12 @@ const VisualizarMonitoria = () => {
           <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
             Avaliar Monitoria
           </Text>
-          <StarRating 
-          maxStars={5}
-          initialRating={0}
-          onRatingChange={(newValue) => console.log(newValue)}
-          size={24}
-        />
+          <StarRating
+            maxStars={5}
+            initialRating={0}
+            onRatingChange={(newValue) => console.log(newValue)}
+            size={24}
+          />
         </>)}
 
         <Box w="100%">
@@ -261,24 +257,9 @@ const VisualizarMonitoria = () => {
         )}
       </VStack>
 
-      <Flex justifyContent="flex-end" mt={12} gap={4}>
-
-        {userType === 'MONITOR' && (<Button
-          variant="outline"
-          colorPalette="gray"
-          mr="auto"
-          onClick={handleGerarCertificado}
-
-        >
-          Gerar Certificado
-        </Button>)}
-        
-        <Button 
-        colorPalette="gray" 
-        variant="outline" 
-        mr={4} 
-        onClick={returnToHome}
-        >Voltar</Button>
+      <Flex justifyContent="flex-end" mt={12} gap={8}>
+        <Button colorPalette="gray" variant="outline" mr="auto" onClick={returnToHome}>Voltar</Button>
+        <MeDropdownButton items={items} button={{ text: "Ações" }} />
 
         <Button
           colorPalette="blue"
