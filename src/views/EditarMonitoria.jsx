@@ -21,7 +21,7 @@ const EditarMonitoria = () => {
   const credenciado = store.getState().auth.user?.statusMonitor === "APROVADO";
 
   const returnToViewMonitoring = () => {
-    navigate(`/monitor/visualizar-monitoria/${id}`);
+    navigate(`/`);
   };
 
   useEffect(() => {
