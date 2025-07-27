@@ -7,6 +7,7 @@ import { store } from "../stores";
 import StarRating from "../components/StarComponent";
 import useMonitoria from "../hooks/useMonitoria";
 import MeDropdownButton from "../components/MeDropdownButton";
+import { confirm } from "../services/confirmService";
 
 const VisualizarMonitoria = () => {
   const userType = store.getState().auth.user?.userType;
@@ -16,12 +17,8 @@ const VisualizarMonitoria = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const returnToHome = () => {
-    if (userType === 'ALUNO') {
-      navigate("/aluno");
-      return;
-    }
-    navigate("/monitor");
+  const backToScreen = () => {
+    navigate(-1);
   };
 
   const apiService = new ApiService();
@@ -68,7 +65,43 @@ const VisualizarMonitoria = () => {
     return timeString;
   };
 
+  const cancelarInscricao = async () => {
+    const result = await confirm({
+      title: "Deseja cancelar a inscrição?",
+      message: "Você tem certeza que deseja cancelar sua inscrição nesta monitoria? Esta ação não pode ser desfeita.",
+      confirmText: "Sim, cancelar",
+      cancelText: "Cancelar"
+    });
+
+    if (!result) return;
+
+    const apiService = new ApiService();
+
+    setLoading(true);
+    const response = await apiService.cancelarInscricaoMonitoria(id);
+    setLoading(false);
+
+    if (!response.success) {
+      toaster.create({
+        type: "error",
+        description: response.message ? response.message : "Desculpe, ocorreu um erro ao cancelar a inscrição.",
+      });
+      return;
+    }
+
+    toaster.create({
+      type: "success",
+      title: "Inscrição cancelada com sucesso!",
+    });
+
+    navigate("/aluno");
+  };
+
   const handleClick = async () => {
+    if (monitoria.isAlunoInscrito) {
+      cancelarInscricao();
+      return;
+    }
     if (userType === 'ALUNO') {
 
       const data = await apiService.inscreverAluno(id);
@@ -82,7 +115,7 @@ const VisualizarMonitoria = () => {
     navigate(`/monitor/editar-monitoria/${id}`);
   };
 
-  const { items } = useMonitoria({ monitoria, onCancelar: returnToHome, onRealizada: fetchMonitoria });
+  const { items } = useMonitoria({ monitoria, onCancelar: backToScreen, onRealizada: fetchMonitoria });
 
   if (loading) {
     return (
@@ -182,12 +215,12 @@ const VisualizarMonitoria = () => {
           <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
             Avaliação do monitor
           </Text>
-          <StarRating 
-          maxStars={5}
-          initialRating={monitoria.avaliacaoMediaMonitor}
-          size={24}
-          readonly={true}
-        />
+          <StarRating
+            maxStars={5}
+            initialRating={monitoria.avaliacaoMediaMonitor}
+            size={24}
+            readonly={true}
+          />
         </>)}
 
         <Box w="100%">
@@ -258,15 +291,15 @@ const VisualizarMonitoria = () => {
       </VStack>
 
       <Flex justifyContent="flex-end" mt={12} gap={8}>
-        <Button colorPalette="gray" variant="outline" mr="auto" onClick={returnToHome}>Voltar</Button>
-        <MeDropdownButton items={items} button={{ text: "Ações" }} />
+        <Button colorPalette="gray" variant="outline" mr="auto" onClick={backToScreen}>Voltar</Button>
+        {userType === 'MONITOR' && <MeDropdownButton items={items} button={{ text: "Ações" }} />}
 
         <Button
-          colorPalette="blue"
+          colorPalette={monitoria.isAlunoInscrito ? "red" : "blue"}
           disabled={!monitoria.status || monitoria.status === 'REALIZADA'}
           onClick={handleClick}
         >
-          {userType === 'MONITOR' ? 'Editar' : 'Inscrever-se'}
+          {monitoria.isAlunoInscrito ? 'Cancelar Inscrição' : userType === 'MONITOR' ? 'Editar Monitoria' : 'Inscrever-se'}
         </Button>
       </Flex>
     </Stack>

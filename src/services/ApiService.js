@@ -228,6 +228,22 @@ export default class ApiService {
     }
   }
 
+  async buscarMonitorias(filter) {
+    try {
+      const response = await this.#request.get(`/buscar-monitorias?${this.#formatStrFilter(filter)}`);
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: { data: response.data.data }
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao buscar as monitorias.",
+      };
+    }
+  }
+
   async obterMonitoria(id) {
     try {
       const response = await this.#request.get(`/monitorias/${id}`);
@@ -283,7 +299,7 @@ export default class ApiService {
     }
   }
 
-   async cancelarMonitoria(id) {
+  async cancelarMonitoria(id) {
     try {
       const response = await this.#request.patch(`/monitorias/${id}/cancelar`, {});
 
@@ -295,6 +311,22 @@ export default class ApiService {
       return {
         success: false,
         message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao cancelar a monitoria.",
+      };
+    }
+  }
+
+  async cancelarInscricaoMonitoria(id) {
+    try {
+      const response = await this.#request.delete(`/monitorias/${id}/cancelar-inscricao`, {});
+
+      return {
+        success: response.data.status === "success" && response.status === 200,
+        data: response.data.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message ? error.response.data.message : "Desculpe, ocorreu um erro desconhecido ao cancelar as inscrição na monitoria.",
       };
     }
   }
@@ -423,7 +455,7 @@ export default class ApiService {
     }
   }
 
-  async avaliar(monitoriaId, nota){
+  async avaliar(monitoriaId, nota) {
     try {
       const response = await this.#request.post(`/monitorias/${monitoriaId}/avaliar`, { nota });
 

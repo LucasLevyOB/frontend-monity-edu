@@ -11,6 +11,7 @@ import Cadastro from "../views/Cadastro";
 import VisualizarMonitoria from "../views/VisualizarMonitoria";
 import EditarMonitoria from "../views/EditarMonitoria";
 import EditarUsuario from "../views/EditarUsuario";
+import BuscarMonitorias from "../views/BuscarMonitorias";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
           <Route index element={<DashboardAluno />} />
           <Route path='/aluno/visualizar-monitoria/:id' element={<VisualizarMonitoria />} />
           <Route path='/aluno/editar/:id' element={<EditarUsuario />} />
+          <Route path='/aluno/monitorias' element={<BuscarMonitorias />} />
         </Route>
       </Route>
       <Route path="/login" element={<Login />} />
