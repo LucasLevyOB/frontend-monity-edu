@@ -184,13 +184,13 @@ const VisualizarMonitoria = () => {
 
         {userType === 'ALUNO' && (<>
           <Text fontWeight="semibold" color="fg.muted" fontSize="sm" mb={1}>
-            Avaliar Monitoria
+            Avaliação do monitor
           </Text>
           <StarRating 
           maxStars={5}
-          initialRating={0}
-          onRatingChange={(newValue) => console.log(newValue)}
+          initialRating={monitoria.avaliacaoMediaMonitor}
           size={24}
+          readonly={true}
         />
         </>)}
 
